@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#193a36">
+  <title>こもれび開拓団 — 陣地づくりの試作</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand"><span class="brand-mark">✿</span><div><strong>こもれび開拓団</strong><small>ちいさな土地から、みんなの世界へ。</small></div></div>
+    <div class="top-actions"><span class="demo-pill">試作版</span><button id="helpBtn" class="icon-btn" aria-label="遊び方">?</button></div>
+  </header>
+
+  <main class="layout">
+    <section class="world-panel panel">
+      <div class="world-heading"><div><p class="eyebrow">SHARED WORLD · DEMO</p><h1>ひだまりの原っぱ</h1></div><button id="centerBtn" class="small-button">拠点へ戻る</button></div>
+      <div class="world-stats"><span>🌿 開拓者 <b id="playerCount">12</b>/100</span><span>🧭 発見した土地 <b id="tileCount">—</b></span><span>⏱ <b id="clock">--:--</b></span></div>
+      <div class="map-wrap"><div id="map" class="map" role="grid" aria-label="ひだまりの原っぱマップ"></div></div>
+      <div class="map-legend"><span><i class="legend-swatch yours"></i>あなた</span><span><i class="legend-swatch other"></i>ほかの人</span><span><i class="legend-swatch wild"></i>無人地</span><span><i class="legend-swatch path"></i>草地</span></div>
+      <div class="movement"><span id="locationLabel">拠点にいます</span><div class="dpad" aria-label="移動"><button data-move="up" aria-label="上へ">▲</button><div><button data-move="left" aria-label="左へ">◀</button><button data-move="down" aria-label="下へ">▼</button><button data-move="right" aria-label="右へ">▶</button></div></div></div>
+      <p class="hint">隣のマスをタップするか矢印で移動。土地に立ち続けると占領が進むよ。</p>
+    </section>
+
+    <aside class="side-column">
+      <section class="panel profile-panel">
+        <div class="profile-head"><div class="avatar">🧑‍🌾</div><div><p class="eyebrow">あなたの小さな拠点</p><h2 id="playerName">こもれびさん</h2></div><button id="renameBtn" class="text-button">名前変更</button></div>
+        <div class="wallet"><span>🌟 ポイント</span><strong id="points">0</strong></div>
+        <div class="income-row"><span>土地の収入</span><b id="income">0 pt / 分</b></div>
+        <div class="income-row"><span>飾りボーナス</span><b id="bonus">+0%</b></div>
+        <div class="morale"><div><span>気力</span><b id="moraleValue">3 / 3</b></div><div class="bar"><i id="moraleBar"></i></div><small>同じ土地への連続攻撃で消耗。時間で回復するよ。</small></div>
+      </section>
+
+      <section class="panel action-panel">
+        <div class="section-title"><div><p class="eyebrow">いまいる場所</p><h2 id="tileTitle">拠点</h2></div><span id="tileBadge" class="tile-badge">ホーム</span></div>
+        <p id="tileDescription" class="tile-description">ここがあなたの帰る場所。少しずつ飾って育てよう。</p>
+        <div id="occupation" class="occupation hidden"><div class="occ-head"><span id="occLabel">占領中…</span><b id="occTime">30秒</b></div><div class="bar"><i id="occBar"></i></div><button id="interruptBtn" class="text-button">やめる</button></div>
+        <div id="tileActions" class="tile-actions"></div>
+      </section>
+
+      <section class="panel shop-panel">
+        <div class="section-title"><div><p class="eyebrow">ポイントの使い道</p><h2>小さなお店</h2></div><span>🛍️</span></div>
+        <div id="shopItems" class="shop-items"></div>
+        <p class="shop-note">飾りが増えると、土地からのポイントも少しずつ増えるよ。</p>
+      </section>
+
+      <section class="panel log-panel"><div class="section-title"><h2>できごと</h2><button id="resetBtn" class="text-button">デモをリセット</button></div><ul id="eventLog" class="event-log"></ul></section>
+    </aside>
+  </main>
+  <footer>この試作の進行状況は、いま使っているブラウザに保存されます。みんなで同じ世界を遊ぶ機能は、オンライン保存先をつなぐ段階で追加します。</footer>
+
+  <dialog id="helpDialog"><div class="dialog-inner"><button class="dialog-close" data-close aria-label="閉じる">×</button><p class="eyebrow">HOW TO PLAY</p><h2>遊び方</h2><ul><li>矢印か隣のマスをタップして移動。</li><li>無人の土地に30秒いると、自分の土地になるよ。</li><li>ほかの人の土地は60秒。妨害されると占領が中断するよ。</li><li>同じ土地を攻め続けると気力を消耗。時間で回復するよ。</li><li>ポイントで飾りを買うと、土地の収入が上がるよ。</li></ul><p class="demo-warning">ここはブラウザ内で動く試作世界です。別の人の端末とは、まだ土地やポイントを共有しません。</p><button class="primary-button" data-close>わかった</button></div></dialog>
+  <dialog id="nameDialog"><form method="dialog" class="dialog-inner"><button class="dialog-close" value="cancel" aria-label="閉じる">×</button><p class="eyebrow">YOUR NAME</p><h2>開拓者の名前</h2><input id="nameInput" maxlength="12" placeholder="名前を入力" autocomplete="off"><button class="primary-button" value="save">決定</button></form></dialog>
+  <script src="game.js"></script>
+</body>
+</html>
