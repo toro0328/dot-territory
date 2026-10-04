@@ -72,3 +72,18 @@
 .piece-fence{width:48px;height:48px;margin-bottom:8px;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 18 16' shape-rendering='crispEdges'%3E%3Cpath fill='%236b442e' d='M2 3h3v11H2zM8 3h3v11H8zM14 3h3v11h-3zM0 6h18v2H0zM0 11h18v2H0z'/%3E%3Cpath fill='%23b27c49' d='M2 3h1v10H2zM8 3h1v10H8zM14 3h1v10h-1zM0 6h18v1H0zM0 11h18v1H0z'/%3E%3C/svg%3E")}
 .room-player{bottom:42px;font-size:22px;filter:drop-shadow(3px 3px #46322b)}
 @media(max-width:800px){.house-floor{min-width:680px;height:285px;margin-top:14px;padding-top:128px;grid-template-columns:repeat(20,minmax(30px,1fr))}.house-floor::before{top:auto;bottom:38px;height:4px}.house-floor::after{height:38px}.room-piece{width:43px;height:56px}.piece-cottage{width:52px;height:60px}.room-player{bottom:42px;font-size:19px}}
+
+/* Keep the room scene inside phone screens; each floor slot still remains tappable. */
+.house-view{width:100%;min-width:0;overflow:hidden;padding:10px 0}
+.house-caption{align-items:flex-start;flex-wrap:wrap}
+.house-floor{width:100%;max-width:570px;min-width:0!important;height:clamp(205px,56vw,285px);grid-template-columns:repeat(20,minmax(0,1fr));grid-template-rows:1fr;gap:clamp(1px,.45vw,3px);padding:clamp(76px,24vw,125px) clamp(5px,2.5vw,14px) 36px;overflow:hidden;touch-action:manipulation}
+.room-tile{min-width:0;padding:0;font-size:clamp(11px,3.5vw,20px);overflow:visible}
+.room-door{width:100%;max-width:20px;height:clamp(25px,9vw,43px)}
+.room-piece{width:clamp(19px,6.3vw,38px);height:clamp(30px,11vw,53px);max-width:100%;background-size:contain}
+.piece-cottage{width:clamp(23px,8vw,46px);height:clamp(32px,12vw,58px)}
+.piece-fence{width:clamp(20px,7vw,40px);height:clamp(24px,8vw,42px)}
+.room-player{bottom:1px;right:0;font-size:clamp(12px,4vw,19px)}
+.house-floor::before{left:6px;right:6px;top:8px;height:5px}
+.house-floor::after{left:6px;right:6px;bottom:7px;height:28px}
+.inventory-box{width:100%;min-width:0}
+@media(max-width:600px){.layout{grid-template-columns:minmax(0,1fr);padding:0 9px 15px;margin:10px auto;gap:10px}.world-panel{padding:12px}.topbar{height:58px;padding:0 10px}.brand{gap:6px}.brand small{font-size:8px}.brand-mark{width:32px;height:32px}.demo-pill{display:none}.shop-jump{padding:7px;font-size:9px}.map-wrap{padding:4px}.map{min-width:420px}.world-heading h1{font-size:16px}.house-floor{height:clamp(205px,64vw,260px);padding-top:clamp(75px,24vw,102px);padding-bottom:32px}.house-floor::after{height:24px}.house-legend{gap:8px;flex-wrap:wrap;font-size:8px}.inventory-item{font-size:8px;padding:5px}.travel-row{font-size:9px}}
