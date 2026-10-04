@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#172b2b">
   <title>こもれび開拓団 — 冒険と陣地のRPG試作</title>
-  <link rel="stylesheet" href="style.css?v=6">
+  <link rel="stylesheet" href="style.css?v=7">
 </head>
 <body>
   <header class="topbar">
@@ -16,10 +16,11 @@
   <main class="layout" id="world">
     <section class="world-panel panel">
       <div class="world-heading"><div><p class="eyebrow">ADVENTURE LOG · ひだまり地方</p><h1>ひだまりの原っぱ</h1></div><button id="homeBtn" class="small-button">🏠 家に入る</button></div>
-      <div class="world-stats"><span>🧭 開拓者 <b id="playerCount">12</b>/100</span><span>領地 <b id="tileCount">—</b>マス</span><span>世界時刻 <b id="clock">--:--</b></span></div>
+      <div class="world-stats"><span>🧭 開拓者 <b id="playerCount">4</b>/100</span><span>領地 <b id="tileCount">—</b>マス</span><span>世界時刻 <b id="clock">--:--</b></span></div>
       <div id="worldMapView">
         <div class="map-wrap"><div id="map" class="map" role="grid" aria-label="ひだまりの原っぱマップ"></div></div>
-        <div class="map-legend"><span><i class="legend-swatch yours"></i>あなた</span><span><i class="legend-swatch other"></i>ほかの人</span><span><i class="legend-swatch wild"></i>無人地</span><span><i class="legend-swatch path"></i>草地</span></div>
+        <div class="map-legend"><span><i class="legend-swatch yours"></i>あなた</span><span><i class="legend-swatch other"></i>CPU開拓者</span><span><i class="legend-swatch wild"></i>無人地</span><span><i class="legend-swatch path"></i>草地</span></div>
+        <p class="shop-note">🤖 CPU開拓者が自動で領地を広げています。⚔️の表示がある土地は侵攻中です。</p>
       </div>
       <section id="houseView" class="house-view hidden" aria-label="拠点の室内">
         <div class="house-caption"><span>🏡 はじまりの家</span><small>横から見た室内。家具を選んで、床の好きな場所に置こう。</small></div>
@@ -50,11 +51,11 @@
 
       <section id="shop" class="panel shop-panel">
         <div class="section-title"><div><p class="eyebrow">TRAVELER'S SHOP</p><h2>旅人の道具屋</h2></div><span>⚒️</span></div>
-        <p class="shop-note">家具は各種類3個まで。所持品の強化は何度でもでき、価格はポイントの増加に合わせて調整されます。</p>
+        <p class="shop-note">家具・装置は各種類3個まで。所持品の強化は何度でもできます。攻撃装備は占領を速め、防衛装置はCPUの侵攻を遅らせます。</p>
         <div id="shopSets" class="shop-sets"></div>
         <h3 class="catalog-title">アイテム一覧</h3>
         <div id="shopItems" class="shop-items"></div>
-        <p class="shop-note">壁紙は購入すると家に反映。家具は家に置くと収入が増えます。</p>
+        <p class="shop-note">壁紙は購入すると家に反映。家具は家に置くと収入が増えます。装置の効果は所持していれば働きます。</p>
       </section>
 
       <section class="panel log-panel"><div class="section-title"><h2>冒険の記録</h2><button id="resetBtn" class="text-button">デモをリセット</button></div><ul id="eventLog" class="event-log"></ul></section>
@@ -62,8 +63,8 @@
   </main>
   <footer>現在の試作データはこのブラウザーに保存されます。プレイヤー同士で同じ世界を共有する機能は、オンライン保存先を追加する段階です。</footer>
 
-  <dialog id="helpDialog"><div class="dialog-inner"><button class="dialog-close" data-close aria-label="閉じる">×</button><p class="eyebrow">FIELD GUIDE</p><h2>冒険の手引き</h2><ul><li>マップで目的地を選ぶと、自動で道を歩いていきます。</li><li>無人地に着いて30秒、ほかの人の土地は60秒いると占領できます。</li><li>以前の自分の土地は15秒で奪還できます。</li><li>何度も攻めると必要時間が延びます。気力は休息や時間で回復します。</li><li>家具は各種類3個まで。置いた家具はショップで何度でも強化できます。</li><li>領地の限定ショップは2分で閉まります。地図の買い物マークを選んで急ごう。</li></ul><p class="demo-warning">この世界はまだブラウザー内だけのデモです。別の端末とは領地やポイントを共有しません。</p><button class="primary-button" data-close>冒険へ戻る</button></div></dialog>
+  <dialog id="helpDialog"><div class="dialog-inner"><button class="dialog-close" data-close aria-label="閉じる">×</button><p class="eyebrow">FIELD GUIDE</p><h2>冒険の手引き</h2><ul><li>マップで目的地を選ぶと、自動で道を歩いていきます。</li><li>無人地に着いて30秒、ほかの人の土地は60秒いると占領できます。</li><li>以前の自分の土地は15秒で奪還できます。</li><li>何度も攻めると必要時間が延びます。気力は休息や時間で回復します。</li><li>家具は各種類3個まで。置いた家具はショップで何度でも強化できます。</li><li>CPU開拓者も自動で土地を取り合います。奪われた土地は現地で取り返せます。</li><li>領地の限定ショップは2分で閉まります。地図の買い物マークを選んで急ごう。</li></ul><p class="demo-warning">この世界はまだブラウザー内だけのデモです。別の端末とは領地やポイントを共有しません。</p><button class="primary-button" data-close>冒険へ戻る</button></div></dialog>
   <dialog id="nameDialog"><form method="dialog" class="dialog-inner"><p class="eyebrow">ADVENTURER REGISTRATION</p><h2>冒険者ギルドへようこそ</h2><p class="tile-description">この世界で使う名前を決めてください。</p><input id="nameInput" maxlength="12" placeholder="冒険者の名前" autocomplete="nickname" required><button class="primary-button" value="save">冒険を始める</button></form></dialog>
-  <script src="game.js?v=6"></script>
+  <script src="game.js?v=7"></script>
 </body>
 </html>
