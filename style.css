@@ -20,6 +20,42 @@
 .house-legend{color:#d2c89f}
 @media(max-width:800px){.house-floor{height:250px;margin-top:48px;grid-template-columns:repeat(20,minmax(38px,1fr));padding:28px 8px 0}.house-floor::before{height:50px;top:-47px}.house-floor::after{height:43px}.room-tile{font-size:25px}.room-player{font-size:18px}}
 
+/* Scrollable catalog, bundles, and territory pop-up shop */
+.shop-panel{scroll-margin-top:78px}
+.top-actions .shop-jump{padding:7px 10px;font-size:9px;white-space:nowrap}
+.shop-panel>.shop-note{line-height:1.55}
+.shop-sets{display:grid;gap:7px;margin:11px 0 14px}
+.bundle-card{display:grid;grid-template-columns:30px 1fr;gap:2px 7px;align-items:center;padding:9px;background:#243a32;border:1px solid #718052}
+.bundle-card .bundle-icon{grid-row:span 2;font-size:22px}
+.bundle-card strong{font-size:10px;color:#f0db91}
+.bundle-card small{font-size:8px;color:#b3bea5;line-height:1.5}
+.bundle-card button,.shop-item .upgrade-button{grid-column:1/-1;border:1px solid #957d43;background:linear-gradient(#e5ca78,#b59448);color:#27372d;padding:6px 7px;font-family:'DotGothic16',sans-serif;font-size:9px;box-shadow:inset 0 -2px #92753b}
+.bundle-card button:disabled,.shop-item button:disabled{opacity:.45;cursor:not-allowed}
+.catalog-title{margin:10px 0 5px;color:#ebd588;font:11px 'DotGothic16',sans-serif}
+.shop-items{display:grid;grid-template-columns:1fr 1fr;gap:6px;max-height:430px;overflow-y:auto;overscroll-behavior:contain;padding:4px 5px 8px 0;scrollbar-color:#8c8959 #1a2c27;scrollbar-width:thin}
+.shop-items .catalog-group{grid-column:1/-1;margin:9px 0 0;padding:5px 7px;background:#182a26;border-left:3px solid #b3a461;color:#d9d49f;font:9px 'DotGothic16',sans-serif}
+.shop-item{grid-template-columns:27px 1fr;min-height:96px;align-content:start}
+.shop-item small{line-height:1.5}
+.shop-item button{font-size:8px;padding:6px 4px}
+.shop-item .upgrade-button{background:linear-gradient(#748b59,#4b6648);border-color:#a2a96d;color:#f0efce;box-shadow:inset 0 -2px #3d573d}
+.limited-shop-panel{margin-top:12px;padding:10px;background:#2b3b30;border:2px solid #dfbd59;box-shadow:inset 0 0 0 2px #182722}
+.limited-shop-panel.hidden{display:none}
+.limited-timer{color:#ffe68b;font:9px 'DotGothic16',sans-serif;white-space:nowrap}
+.limited-shop-offers{display:grid;gap:6px;max-height:315px;overflow-y:auto}
+.limited-offer{position:relative;padding-top:15px}
+.limited-discount{position:absolute;z-index:1;top:0;right:7px;padding:2px 5px;background:#a75345;color:white;font:8px 'DotGothic16',sans-serif}
+.limited-offer .shop-items{max-height:none;overflow:visible;padding:0}
+.limited-offer .shop-item{background:#1a2c27}
+.limited-offer .shop-item button:first-of-type{border-color:#b38c46}
+.limited-shop-mark{position:absolute;z-index:3;right:1px;top:0;font-size:15px;filter:drop-shadow(1px 1px #2b1e13);animation:bob .65s infinite alternate}
+.cell.limited-shop{outline:3px solid #ffe27b;outline-offset:-3px;z-index:2}
+.wall-style-moss-wall{background-color:#8ca583!important}
+.wall-style-wave-wall{background-color:#8baeb4!important}
+.wall-style-star-wall{background-color:#585e82!important}
+.room-piece{font-size:30px;line-height:1;image-rendering:pixelated}
+@media(max-width:800px){.top-actions .shop-jump{padding:6px;font-size:8px}.shop-items{max-height:380px;grid-template-columns:1fr 1fr}.limited-shop-offers{max-height:280px}}
+@media(max-width:420px){.demo-pill{display:none}.top-actions{gap:5px}.top-actions .shop-jump{font-size:8px}.shop-items{grid-template-columns:1fr 1fr}.bundle-card{padding:7px}}
+
 /* Chunky, hand-pixelated cutaway room, matching the supplied reference. */
 .house-view{overflow-x:auto;padding:10px 2px 14px}
 .house-floor{min-width:680px;width:100%;height:310px;margin:14px auto 0;padding:142px 12px 42px;grid-template-columns:repeat(20,minmax(30px,1fr));background-color:#c5b3b2;background-image:linear-gradient(#30221d,#30221d),linear-gradient(#422d2c,#422d2c),linear-gradient(#10202e,#10202e),linear-gradient(132deg,transparent 44%,#8297a7 45% 51%,transparent 52%),linear-gradient(132deg,transparent 44%,#8297a7 45% 51%,transparent 52%),linear-gradient(#6b4845,#6b4845);background-size:100% 27px,112px 72px,40px 55px,40px 55px,40px 55px,4px 63px;background-position:0 0,50% 73px,calc(50% - 21px) 81px,calc(50% - 21px) 81px,calc(50% + 21px) 81px,50% 77px;background-repeat:no-repeat;border:0;box-shadow:none}
