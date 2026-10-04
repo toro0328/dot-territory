@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#172b2b">
   <title>こもれび開拓団 — 冒険と陣地のRPG試作</title>
-  <link rel="stylesheet" href="style.css?v=2">
+  <link rel="stylesheet" href="style.css?v=3">
 </head>
 <body>
   <header class="topbar">
@@ -22,9 +22,9 @@
         <div class="map-legend"><span><i class="legend-swatch yours"></i>あなた</span><span><i class="legend-swatch other"></i>ほかの人</span><span><i class="legend-swatch wild"></i>無人地</span><span><i class="legend-swatch path"></i>草地</span></div>
       </div>
       <section id="houseView" class="house-view hidden" aria-label="拠点の室内">
-        <div class="house-caption"><span>🏡 はじまりの家</span><small>家具を選んでから、床のマスを選ぶと置けるよ。</small></div>
-        <div id="houseFloor" class="house-floor" role="grid" aria-label="家の中"></div>
-        <div class="house-legend"><span>🚪 玄関</span><span>🧑‍🌾 あなた</span><span>床のマスをタップして配置</span></div>
+        <div class="house-caption"><span>🏡 はじまりの家</span><small>横から見た室内。家具を選んで、床の好きな場所に置こう。</small></div>
+        <div id="houseFloor" class="house-floor" role="grid" aria-label="横から見た家の中"></div>
+        <div class="house-legend"><span>🚪 玄関</span><span>🧙 あなた</span><span>床の位置をタップして配置</span></div>
         <div class="inventory-box"><div class="inventory-heading"><strong>家具の持ち物</strong><small id="houseMessage">飾りを置いて、自分の部屋にしよう。</small></div><div id="inventoryList" class="inventory-list"></div></div>
       </section>
       <div class="travel-panel"><div class="travel-row"><span id="locationLabel">拠点にいます</span><b id="travelLabel">行き先を選んでね</b></div><div id="travelTrack" class="travel-track"><i id="travelBar"></i></div></div>
@@ -60,6 +60,6 @@
 
   <dialog id="helpDialog"><div class="dialog-inner"><button class="dialog-close" data-close aria-label="閉じる">×</button><p class="eyebrow">FIELD GUIDE</p><h2>冒険の手引き</h2><ul><li>マップで目的地を選ぶと、自動で道を歩いていきます。</li><li>無人地に着いて30秒、ほかの人の土地は60秒いると占領できます。</li><li>以前の自分の土地は15秒で奪還できます。</li><li>何度も攻めると必要時間が延びます。気力は休息や時間で回復します。</li><li>家の中で家具を配置すると、領地の収入が増えます。</li></ul><p class="demo-warning">この世界はまだブラウザー内だけのデモです。別の端末とは領地やポイントを共有しません。</p><button class="primary-button" data-close>冒険へ戻る</button></div></dialog>
   <dialog id="nameDialog"><form method="dialog" class="dialog-inner"><p class="eyebrow">ADVENTURER REGISTRATION</p><h2>冒険者ギルドへようこそ</h2><p class="tile-description">この世界で使う名前を決めてください。</p><input id="nameInput" maxlength="12" placeholder="冒険者の名前" autocomplete="nickname" required><button class="primary-button" value="save">冒険を始める</button></form></dialog>
-  <script src="game.js?v=2"></script>
+  <script src="game.js?v=3"></script>
 </body>
 </html>
