@@ -5,12 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#172b2b">
   <title>こもれび開拓団 — 冒険と陣地のRPG試作</title>
-  <link rel="stylesheet" href="style.css?v=5">
+  <link rel="stylesheet" href="style.css?v=6">
 </head>
 <body>
   <header class="topbar">
     <a class="brand" href="#world" aria-label="こもれび開拓団"><span class="brand-mark">✿</span><span><strong>こもれび開拓団</strong><small>森を歩き、土地を守り、家を育てる。</small></span></a>
-    <div class="top-actions"><span class="demo-pill">WORLD 01 · BETA</span><button id="helpBtn" class="icon-btn" aria-label="遊び方">?</button></div>
+    <div class="top-actions"><span class="demo-pill">WORLD 01 · BETA</span><button id="shopJumpBtn" class="small-button shop-jump">🛒 道具屋</button><button id="helpBtn" class="icon-btn" aria-label="遊び方">?</button></div>
   </header>
 
   <main class="layout" id="world">
@@ -45,12 +45,16 @@
         <p id="tileDescription" class="tile-description">家があなたの冒険の始まり。室内に入り、家具を飾ろう。</p>
         <div id="occupation" class="occupation hidden"><div class="occ-head"><span id="occLabel">占領中…</span><b id="occTime">30秒</b></div><div class="bar"><i id="occBar"></i></div><button id="interruptBtn" class="text-button">中断</button></div>
         <div id="tileActions" class="tile-actions"></div>
+        <section id="limitedShopPanel" class="limited-shop-panel hidden" aria-live="polite"><div class="section-title"><div><p class="eyebrow">LIMITED SHOP</p><h2>領地の出張商人</h2></div><b id="limitedShopTimer" class="limited-timer">閉店まで --秒</b></div><p class="shop-note">今だけの割引品。閉店時刻になる前に購入しよう。</p><div id="limitedShopOffers" class="limited-shop-offers"></div></section>
       </section>
 
-      <section class="panel shop-panel">
+      <section id="shop" class="panel shop-panel">
         <div class="section-title"><div><p class="eyebrow">TRAVELER'S SHOP</p><h2>旅人の道具屋</h2></div><span>⚒️</span></div>
+        <p class="shop-note">家具は各種類3個まで。所持品の強化は何度でもでき、価格はポイントの増加に合わせて調整されます。</p>
+        <div id="shopSets" class="shop-sets"></div>
+        <h3 class="catalog-title">アイテム一覧</h3>
         <div id="shopItems" class="shop-items"></div>
-        <p class="shop-note">家具を家に配置すると、領地からの収入が増えます。</p>
+        <p class="shop-note">壁紙は購入すると家に反映。家具は家に置くと収入が増えます。</p>
       </section>
 
       <section class="panel log-panel"><div class="section-title"><h2>冒険の記録</h2><button id="resetBtn" class="text-button">デモをリセット</button></div><ul id="eventLog" class="event-log"></ul></section>
@@ -58,8 +62,8 @@
   </main>
   <footer>現在の試作データはこのブラウザーに保存されます。プレイヤー同士で同じ世界を共有する機能は、オンライン保存先を追加する段階です。</footer>
 
-  <dialog id="helpDialog"><div class="dialog-inner"><button class="dialog-close" data-close aria-label="閉じる">×</button><p class="eyebrow">FIELD GUIDE</p><h2>冒険の手引き</h2><ul><li>マップで目的地を選ぶと、自動で道を歩いていきます。</li><li>無人地に着いて30秒、ほかの人の土地は60秒いると占領できます。</li><li>以前の自分の土地は15秒で奪還できます。</li><li>何度も攻めると必要時間が延びます。気力は休息や時間で回復します。</li><li>家の中で家具を配置すると、領地の収入が増えます。</li></ul><p class="demo-warning">この世界はまだブラウザー内だけのデモです。別の端末とは領地やポイントを共有しません。</p><button class="primary-button" data-close>冒険へ戻る</button></div></dialog>
+  <dialog id="helpDialog"><div class="dialog-inner"><button class="dialog-close" data-close aria-label="閉じる">×</button><p class="eyebrow">FIELD GUIDE</p><h2>冒険の手引き</h2><ul><li>マップで目的地を選ぶと、自動で道を歩いていきます。</li><li>無人地に着いて30秒、ほかの人の土地は60秒いると占領できます。</li><li>以前の自分の土地は15秒で奪還できます。</li><li>何度も攻めると必要時間が延びます。気力は休息や時間で回復します。</li><li>家具は各種類3個まで。置いた家具はショップで何度でも強化できます。</li><li>領地の限定ショップは2分で閉まります。地図の買い物マークを選んで急ごう。</li></ul><p class="demo-warning">この世界はまだブラウザー内だけのデモです。別の端末とは領地やポイントを共有しません。</p><button class="primary-button" data-close>冒険へ戻る</button></div></dialog>
   <dialog id="nameDialog"><form method="dialog" class="dialog-inner"><p class="eyebrow">ADVENTURER REGISTRATION</p><h2>冒険者ギルドへようこそ</h2><p class="tile-description">この世界で使う名前を決めてください。</p><input id="nameInput" maxlength="12" placeholder="冒険者の名前" autocomplete="nickname" required><button class="primary-button" value="save">冒険を始める</button></form></dialog>
-  <script src="game.js?v=5"></script>
+  <script src="game.js?v=6"></script>
 </body>
 </html>
