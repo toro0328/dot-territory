@@ -1,17 +1,19 @@
 (() => {
-  const W=13,H=11,ROOM_W=6,ROOM_H=5,KEY='komorebi-territory-demo-v1',WORLD_START=Date.now(),STEP_MS=1250;
+  const W=13,H=11,ROOM_W=20,ROOM_H=1,KEY='komorebi-territory-demo-v1',WORLD_START=Date.now(),STEP_MS=1250;
   const items=[
     {id:'flower',name:'野の花の花壇',icon:'🌼',cost:30,bonus:8,desc:'収入 +8%'},
     {id:'lamp',name:'きのこのランプ',icon:'🍄',cost:55,bonus:15,desc:'収入 +15%'},
     {id:'cottage',name:'ちいさな小屋',icon:'🏡',cost:100,bonus:25,desc:'収入 +25%'},
     {id:'fence',name:'木の柵',icon:'🪵',cost:45,bonus:0,desc:'家のかざり'}
   ];
-  const initial=()=>({name:'',nameChosen:false,points:80,morale:3,lastTick:Date.now(),decor:[],inventory:[],lands:['6,5'],home:'6,5',pos:'6,5',ownedSince:{'6,5':Date.now()},past:['6,5'],attacks:{},attempts:{},selected:'6,5',occupy:null,travel:null,inside:false,houseSlot:'2,3',pendingItem:null,pendingMove:null,log:['冒険者ギルドに登録して、世界へ出発しよう。']});
+  const initial=()=>({name:'',nameChosen:false,points:80,morale:3,lastTick:Date.now(),decor:[],inventory:[],lands:['6,5'],home:'6,5',pos:'6,5',ownedSince:{'6,5':Date.now()},past:['6,5'],attacks:{},attempts:{},selected:'6,5',occupy:null,travel:null,inside:false,houseSlot:'19,0',pendingItem:null,pendingMove:null,log:['冒険者ギルドに登録して、世界へ出発しよう。']});
   let state;try{state={...initial(),...JSON.parse(localStorage.getItem(KEY)||'{}')}}catch{state=initial()}
   if(!Array.isArray(state.inventory))state.inventory=[];
   if(!Array.isArray(state.decor))state.decor=[];
   let decorSeq=0;
-  state.decor=state.decor.map((d,i)=>typeof d==='string'?{uid:`old-${i}`,id:d,slot:`${i%ROOM_W},${Math.floor(i/ROOM_W)%ROOM_H}`}:{...d,uid:d.uid||`old-${i}`,slot:d.slot||`${i%ROOM_W},${Math.floor(i/ROOM_W)%ROOM_H}`});
+  const occupiedRoomSlots=new Set();
+  state.decor=state.decor.map((d,i)=>{const entry=typeof d==='string'?{uid:`old-${i}`,id:d,slot:`${i%ROOM_W},0`}:{...d,uid:d.uid||`old-${i}`,slot:d.slot||`${i%ROOM_W},0`};let [x,y]=entry.slot.split(',').map(Number);if(!Number.isInteger(x)||x<0||x>=ROOM_W||y!==0||occupiedRoomSlots.has(`${x},0`)){x=Array.from({length:ROOM_W},(_,n)=>n).find(n=>!occupiedRoomSlots.has(`${n},0`))??(i%ROOM_W);entry.slot=`${x},0`}occupiedRoomSlots.add(entry.slot);return entry});
+  {const x=Number(String(state.houseSlot||`${ROOM_W-1},0`).split(',')[0]);state.houseSlot=`${Number.isInteger(x)&&x>=0?x%ROOM_W:ROOM_W-1},0`}
   if(state.name==='こもれびさん'&&!state.nameChosen){state.name='';state.nameChosen=false}
   const $=id=>document.getElementById(id),key=(x,y)=>`${x},${y}`,xy=k=>k.split(',').map(Number),has=k=>state.lands.includes(k),itemFor=id=>items.find(i=>i.id===id);
   const map=$('map'),cells=[];let selected=state.selected||state.home;
@@ -48,7 +50,7 @@
     if(k!==state.pos){const b=document.createElement('button');b.textContent=state.travel?.goal===k?'目的地に設定中…':'ここへ向かう';b.disabled=!!state.travel||!!state.occupy;b.addEventListener('click',()=>beginTravel(k));wrap.appendChild(b)}
     if(k===state.home&&state.pos===state.home&&!state.travel){const b=document.createElement('button');b.textContent=state.inside?'室内にいる':'家の中を見る';b.addEventListener('click',enterHome);wrap.appendChild(b);if(!state.inside){const expand=document.createElement('button');expand.textContent='隣の土地を買う · 70pt';expand.disabled=state.points<70;expand.addEventListener('click',buyPlot);wrap.appendChild(expand)}}
   }
-  function renderHouse(){const floor=$('houseFloor');floor.innerHTML='';for(let y=0;y<ROOM_H;y++)for(let x=0;x<ROOM_W;x++){const slot=key(x,y),button=document.createElement('button');button.type='button';button.className='room-tile';button.dataset.slot=slot;const furniture=state.decor.find(d=>d.slot===slot);button.classList.toggle('occupied',!!furniture);button.classList.toggle('slot-selected',state.houseSlot===slot);button.setAttribute('role','gridcell');button.setAttribute('aria-label',furniture?`${itemFor(furniture.id)?.name||'家具'}、${x+1}列${y+1}段`:`空き床、${x+1}列${y+1}段`);button.innerHTML=`<span>${x===0&&y===2?'🚪':furniture?itemFor(furniture.id)?.icon||'🪑':''}</span>${state.inside&&slot==='2,3'?'<i class="room-player">🧙</i>':''}`;button.addEventListener('click',()=>clickRoomSlot(slot));floor.appendChild(button)}
+  function renderHouse(){const floor=$('houseFloor');floor.innerHTML='';for(let y=0;y<ROOM_H;y++)for(let x=0;x<ROOM_W;x++){const slot=key(x,y),button=document.createElement('button');button.type='button';button.className='room-tile';button.dataset.slot=slot;const furniture=state.decor.find(d=>d.slot===slot);button.classList.toggle('occupied',!!furniture);button.classList.toggle('slot-selected',state.houseSlot===slot);button.setAttribute('role','gridcell');button.setAttribute('aria-label',furniture?`${itemFor(furniture.id)?.name||'家具'}、床の位置${x+1}`:`空き床、位置${x+1}`);button.innerHTML=`<span>${x===0?'🚪':furniture?itemFor(furniture.id)?.icon||'🪑':''}</span>${state.inside&&slot===`${ROOM_W-1},0`?'<i class="room-player">🧙</i>':''}`;button.addEventListener('click',()=>clickRoomSlot(slot));floor.appendChild(button)}
     const list=$('inventoryList');list.innerHTML='';if(!state.inventory.length){list.innerHTML='<span class="empty-inventory">持ち物は空です。道具屋で家具を買えます。</span>'}else state.inventory.forEach((id,index)=>{const item=itemFor(id);if(!item)return;const b=document.createElement('button');b.type='button';b.className='inventory-item';b.classList.toggle('chosen',state.pendingItem===id);b.innerHTML=`<span>${item.icon}</span><span>${item.name}</span>`;b.addEventListener('click',()=>{state.pendingItem=id;state.pendingMove=null;$('houseMessage').textContent=`${item.name}を置く床を選んでください。`;renderHouse()});list.appendChild(b)});
     if(state.houseSlot){const placed=state.decor.find(d=>d.slot===state.houseSlot);if(placed){const b=document.createElement('button');b.type='button';b.className='inventory-item remove-item';b.textContent=`🧺 ${itemFor(placed.id)?.name||'家具'}を片づける`;b.addEventListener('click',()=>{state.inventory.push(placed.id);state.decor=state.decor.filter(d=>d.uid!==placed.uid);state.pendingMove=null;log('家具を持ち物に戻した。');render();save()});list.appendChild(b)}}
     if(state.pendingItem)$('houseMessage').textContent=`${itemFor(state.pendingItem)?.name||'家具'}を置く床を選んでください。`;else if(state.pendingMove)$('houseMessage').textContent='移動先の空いている床を選んでください。';else $('houseMessage').textContent='家具を選んでから、床のマスを選ぶと置けるよ。';
