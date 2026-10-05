@@ -5,12 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#172b2b">
   <title>こもれび開拓団 — 冒険と陣地のRPG試作</title>
-  <link rel="stylesheet" href="style.css?v=15">
+  <link rel="stylesheet" href="style.css?v=18">
 </head>
 <body>
   <header class="topbar">
     <a class="brand" href="#world" aria-label="こもれび開拓団"><span class="brand-mark">✿</span><span><strong>こもれび開拓団</strong><small>森を歩き、土地を守り、家を育てる。</small></span></a>
-    <div class="top-actions"><span class="demo-pill">WORLD 01 · BETA</span><button id="shopJumpBtn" class="small-button shop-jump">🛒 道具屋</button><button id="helpBtn" class="icon-btn" aria-label="遊び方">?</button></div>
+    <div class="top-actions"><span class="demo-pill">WORLD 01 · BETA</span><button id="shopJumpBtn" class="small-button shop-jump">🛒 道具屋</button><button id="helpBtn" class="small-button help-jump">📖 遊び方</button></div>
   </header>
 
   <main class="layout" id="world">
@@ -19,7 +19,7 @@
       <div class="world-stats"><span>🧭 <b id="playerCount">4</b>/100</span><span>領地 <b id="tileCount">—</b>マス</span><span>🕒 <b id="clock">--:--</b></span></div>
       <div class="resource-hud" aria-label="冒険者の状態">
         <div class="resource-card points-card"><span>✦ 所持ポイント</span><div><strong id="points">80</strong><small>pt</small></div></div>
-        <div class="resource-card morale-card"><div class="morale-label"><span>⚡ 気力</span><strong id="moraleValue">3 / 3</strong></div><div class="bar"><i id="moraleBar"></i></div></div>
+        <div class="resource-card morale-card"><div class="morale-label"><span>⚡ 気力</span><strong id="moraleValue">100.00 / 100</strong></div><div class="bar"><i id="moraleBar"></i></div></div>
       </div>
       <div id="worldAlert" class="world-alert hidden" role="status" aria-live="assertive"><span>速報</span><strong id="worldAlertText"></strong></div>
       <div id="worldMapView">
@@ -48,7 +48,7 @@
     <aside class="side-column">
       <details class="panel profile-panel compact-profile">
         <summary class="profile-summary"><div class="profile-head"><div class="avatar">🧙</div><div><p class="eyebrow">冒険者ギルド</p><h2 id="playerName">開拓者</h2></div></div><span class="fold-hint">詳細を開く ＋</span></summary>
-        <div class="profile-more"><button id="renameBtn" class="text-button">名前変更</button><div class="income-row"><span>領地の収入</span><b id="income">0 pt / 分</b></div><div class="income-row"><span>家の装飾ボーナス</span><b id="bonus">+0%</b></div><p class="profile-note">連続攻撃で気力を消耗。時間経過で回復します。</p></div>
+        <div class="profile-more"><button id="renameBtn" class="text-button">名前変更</button><div class="income-row"><span>領地の収入</span><b id="income">0 pt / 分</b></div><div class="income-row"><span>家の装飾ボーナス</span><b id="bonus">+0%</b></div><p class="profile-note">気力は最大100。占領中に減り、土地を取ると50回復します。</p></div>
       </details>
 
       <details class="panel log-panel compact-log"><summary class="section-title"><h2>冒険ログ</h2><span id="latestLog" class="log-preview">記録を見る</span></summary><div class="log-content"><button id="resetBtn" class="text-button">デモをリセット</button><ul id="eventLog" class="event-log"></ul></div></details>
@@ -59,12 +59,12 @@
   <dialog id="shopDialog" class="shop-dialog"><div class="shop-dialog-inner"><button class="dialog-close" data-close aria-label="道具屋を閉じる">×</button><section id="shop" class="panel shop-panel">
     <div class="section-title"><div><p class="eyebrow">TRAVELER'S SHOP</p><h2>旅人の道具屋</h2></div><span>⚒️</span></div>
     <p class="shop-note">家具・装置は各種類3個まで。所持品の強化は何度でもできます。攻撃装備は占領を速め、防衛装置はCPUの侵攻を遅らせます。</p>
-    <div id="shopSets" class="shop-sets"></div><h3 class="catalog-title">アイテム一覧</h3><div id="shopItems" class="shop-items"></div>
+    <nav class="shop-tabs" role="tablist" aria-label="道具の種類"><button type="button" role="tab" data-shop-tab="decor" aria-selected="true">🏡 飾り・収入</button><button type="button" role="tab" data-shop-tab="defense" aria-selected="false">🛡 防衛</button><button type="button" role="tab" data-shop-tab="attack" aria-selected="false">⚔️ 攻撃</button></nav><p id="shopCatalogNote" class="shop-page-note"></p><div id="shopSets" class="shop-sets"></div><h3 id="shopCatalogTitle" class="catalog-title">飾り・ポイントアップ</h3><div id="shopItems" class="shop-items"></div>
     <p class="shop-note">壁紙は購入すると家に反映。家具は家に置くと収入が増えます。装置の効果は所持していれば働きます。</p>
   </section></div></dialog>
 
-  <dialog id="helpDialog"><div class="dialog-inner"><button class="dialog-close" data-close aria-label="閉じる">×</button><p class="eyebrow">FIELD GUIDE</p><h2>冒険の手引き</h2><ul><li>マップで目的地を選ぶと、自動で道を歩いていきます。</li><li>空き地まで歩き、現地で3,360ptを払うと自分の土地になります。</li><li>ほかの人の土地は滞在して占領。持ち主本人がオンラインでそのマスにいる時だけ、防衛で時間が延びます。</li><li>占領中は時間に応じて気力を消費します。通りかかるだけでは減りません。</li><li>何度も攻めると必要時間が延びます。気力は休息や時間で回復します。</li><li>家具は各種類3個まで。置いた家具はショップで何度でも強化できます。</li><li>操作中の収入は以前の約半分です。2分操作がない時や離席中はポイントが少しずつ減ります。</li><li>CPU開拓者も自動で土地を取り合います。奪われた土地は現地で取り返せます。</li><li>領地の限定ショップは2分で閉まります。地図の買い物マークを選んで急ごう。</li></ul><p class="demo-warning">この世界はまだブラウザー内だけのデモです。別の端末とは領地やポイントを共有しません。</p><button class="primary-button" data-close>冒険へ戻る</button></div></dialog>
+  <dialog id="helpDialog"><div class="dialog-inner"><button class="dialog-close" data-close aria-label="閉じる">×</button><p class="eyebrow">FIELD GUIDE</p><h2>はじめての方へ · 遊び方</h2><p class="tile-description">マップを歩いて土地を見つけ、家を飾って収入を育てながら、時には相手の領地へ挑むゲームです。</p><ul><li>マップで目的地を選ぶと、自動で道を歩いていきます。</li><li>空き地まで歩き、現地で3,360ptを払うと自分の土地になります。</li><li>相手の土地は、目的地にして到着すると占領開始。通り道では占領しません。持ち主本人がオンラインでそのマスにいる時だけ、防衛で時間が延びます。</li><li>気力は100段階。占領中は時間に応じて減り、土地を取ると50回復、時間経過で回復します。通りかかるだけでは減りません。</li><li>何度も攻めると必要時間が延びます。気力は休息や時間で回復します。</li><li>道具屋は飾り・収入、防衛、攻撃の3ページ。家具は各種類3個までで、強化は何度でもできます。</li><li>操作中の収入は以前の約半分です。2分操作がない時や離席中はポイントが少しずつ減ります。</li><li>CPU開拓者も自動で土地を取り合います。奪われた土地は現地で取り返せます。</li><li>領地の限定ショップは2分で閉まります。地図の買い物マークを選んで急ごう。</li></ul><p class="demo-warning">この世界はまだブラウザー内だけのデモです。別の端末とは領地やポイントを共有しません。</p><button class="primary-button" data-close>冒険へ戻る</button></div></dialog>
   <dialog id="nameDialog"><form method="dialog" class="dialog-inner"><p class="eyebrow">ADVENTURER REGISTRATION</p><h2>冒険者ギルドへようこそ</h2><p class="tile-description">この世界で使う名前を決めてください。</p><input id="nameInput" maxlength="12" placeholder="冒険者の名前" autocomplete="nickname" required><button class="primary-button" value="save">冒険を始める</button></form></dialog>
-  <script src="game.js?v=15"></script>
+  <script src="game.js?v=18"></script>
 </body>
 </html>
