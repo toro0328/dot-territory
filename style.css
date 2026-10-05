@@ -177,3 +177,8 @@
   .compact-log .section-title{gap:6px}.compact-log .log-preview{font-size:7px}
   .compact-log .event-log{max-height:68px}
 }
+
+/* Clear marker for a participant currently online in this tile. */
+.cell.online-presence{outline:2px solid #75ff9a;outline-offset:-3px;z-index:2}
+.online-presence-mark{position:absolute;z-index:6;top:1px;right:2px;color:#74ff91;font-size:9px;line-height:1;text-shadow:0 0 4px #10351b,0 1px 1px #102017}
+.online-legend-dot{display:inline-block;width:9px;height:9px;border-radius:50%;background:#74ff91;box-shadow:0 0 5px #74ff91}
