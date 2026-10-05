@@ -197,3 +197,5 @@
 .online-self-legend-dot{display:inline-block;width:9px;height:9px;border-radius:50%;background:#56d9ff;box-shadow:0 0 5px #56d9ff}
 
 .occupation-estimate{font-size:8px;line-height:1.4;color:#91a18d;opacity:.78;margin:2px 0 6px}.occupation-estimate.hidden{display:none}
+
+.occ-duration{font-size:8px;font-weight:400;color:#a4ad91;opacity:.82;margin-left:auto;white-space:nowrap}.occ-head{gap:8px}
