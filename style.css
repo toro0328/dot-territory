@@ -238,3 +238,5 @@
 .legend-defense-chip{width:14px;height:15px;padding:0;background:none;clip-path:none;border:0}.legend-defense-chip svg{width:14px;height:15px}
 .legend-attack-chip{width:14px;height:14px;padding:0;background:none;border-radius:0}.legend-attack-chip svg{width:14px;height:14px;display:block}
 .legend-raid-mark,.legend-shop-mark{display:inline-grid;place-items:center;width:14px;height:14px;padding:0;background:none;border:0;border-radius:0}.legend-raid-mark::after,.legend-shop-mark::after{content:none}.legend-raid-mark svg,.legend-shop-mark svg{width:14px;height:14px;display:block}
+/* Emoji labels are back on ordinary tiles; only the raid marker keeps its emblem. */
+.cell-icon{line-height:1}
