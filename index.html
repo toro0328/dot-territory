@@ -27,7 +27,10 @@
     #helpDialog .dialog-close,#eventListDialog .dialog-close{appearance:none;-webkit-appearance:none;width:28px;height:28px;padding:0;display:grid;place-items:center;background:linear-gradient(#3b5649,#2a4037);border:1px solid #71815c;border-radius:4px;color:#f1d783;font:700 17px/1 'DotGothic16',sans-serif;box-shadow:inset 0 -2px #1d2f29,0 1px 3px #0e1715;cursor:pointer}
     #helpDialog .dialog-close:hover,#eventListDialog .dialog-close:hover{filter:brightness(1.12)}
     .raid-time-remaining{display:block;margin:5px 0 7px;padding:4px 7px;background:#1b2d29;border:1px solid #6f7956;color:#f2d786;font:9px 'DotGothic16',sans-serif;text-align:center}
-    @media(max-width:600px){.world-title-row{gap:5px}.world-title-row .event-list-button{padding:4px 6px;font-size:7px}.time-event-panel{padding:3px 5px!important;margin:3px 0 4px!important}.time-event-head{font-size:7px!important}.event-list-dialog .dialog-inner{width:94vw;padding:16px}.event-timeline-row{grid-template-columns:48px 1fr;padding:7px}.event-timeline-row time,.event-timeline-row strong{font-size:9px}#helpDialog .dialog-close,#eventListDialog .dialog-close{width:26px;height:26px;font-size:15px}.raid-time-remaining{font-size:8px}}
+    .cell.vacant-event-land{position:relative;z-index:10;outline:4px solid #ffe36f!important;outline-offset:-2px;box-shadow:inset 0 0 0 3px #ff9d36,0 0 18px #ffd94f!important;animation:vacantTimePulse .72s steps(2,end) infinite}
+    .cell.vacant-event-land .event-land-marker{top:-7px;right:-5px;bottom:auto;min-width:48px;padding:3px 4px;background:#ffd95a;border:2px solid #fff1a6;border-radius:4px;color:#2a2b1f;font:700 7px/1.1 'DotGothic16',sans-serif;letter-spacing:-.02em;filter:drop-shadow(0 2px 2px #182019);white-space:nowrap}
+    @keyframes vacantTimePulse{50%{filter:brightness(1.28)}}
+    @media(max-width:600px){.world-title-row{gap:5px}.world-title-row .event-list-button{padding:4px 6px;font-size:7px}.time-event-panel{padding:3px 5px!important;margin:3px 0 4px!important}.time-event-head{font-size:7px!important}.event-list-dialog .dialog-inner{width:94vw;padding:16px}.event-timeline-row{grid-template-columns:48px 1fr;padding:7px}.event-timeline-row time,.event-timeline-row strong{font-size:9px}#helpDialog .dialog-close,#eventListDialog .dialog-close{width:26px;height:26px;font-size:15px}.raid-time-remaining{font-size:8px}.cell.vacant-event-land .event-land-marker{top:-6px;right:-4px;min-width:42px;padding:2px 3px;font-size:6px}}
   </style>
 </head>
 <body>
@@ -94,10 +97,22 @@
     <p class="shop-note">攻撃装備は占領時間を短縮します。各種類3個まで所持でき、強化で効果が上がります。</p>
   </section></div></dialog>
 
-  <dialog id="helpDialog"><div class="dialog-inner"><button class="dialog-close" data-close aria-label="閉じる">×</button><p class="eyebrow">FIELD GUIDE</p><h2>はじめての方へ · 遊び方</h2><p class="tile-description">マップを歩いて土地を見つけ、家を飾って収入を育てながら、時には相手の領地へ挑むゲームです。</p><button id="guideStartBtn" class="primary-button guide-start-button" type="button">🧭 空き地購入・占領ガイドをはじめる</button><ul><li>マップで目的地を選ぶと、自動で道を歩いていきます。</li><li>空き地まで歩き、現地で3,360ptを払うと自分の土地になります。</li><li>相手の土地は、目的地にして到着すると占領開始。通り道では占領しません。持ち主本人がオンラインでそのマスにいる時だけ、防衛で時間が延びます。</li><li>気力は100段階。占領中は時間に応じて減り、土地を取ると5回復、時間経過で回復します。通りかかるだけでは減りません。</li><li>何度も攻めると必要時間が延びます。気力は休息や時間で回復します。</li><li>道具屋は飾りと攻撃の2ページ。攻撃装備は各種類3個まで購入・強化でき、占領時間を短縮します。攻撃倍率は装備1個につき基本4%＋強化1Lvごとに1.5%（軍旗は1.4倍）です。</li><li>占領時間は「max(最低秒数, ceil(基礎秒数 × 現地防衛倍率 × 土地防衛倍率 ÷ 攻撃倍率))」です。敵地は最低20秒、奪還は最低8秒。基礎時間は再挑戦ごとに30秒増え、最大240秒です。攻撃装備は1個につき基本4%＋強化1Lvごとに1.5%を攻撃倍率へ加算（軍旗は1.4倍）。NPCの土地防衛は1Lvごとに12%増えます。</li><li>領地収入は現行値から40%減っています。離席・ログアウト中もポイントは増えますが、獲得量は通常の10%です。</li><li>NPCは不在のあなたの土地を優先して攻めます。攻められた土地は防衛を学び、領地を失うと攻撃力を強化します。奪われた土地は現地で取り返せます。</li><li>ミニレイドは5〜10分おき、大型レイドは約20分おきに空き地で発生します。ミニレイドは参加者ごとに15秒延長（最大1分）、大型は30秒延長（最大5分）。残り時間はレイド欄で確認できます。</li><li>ポイント依頼は日本時間の毎日0時・3時・6時・12時・18時・21時に2時間開催し、各時間帯1回達成できます。深夜0時は土地を増やして2,000pt、未明3時はレイド参加で1,200pt、朝6時は土地で2,400pt、昼12時と夜21時は限定店で買い物、夕18時はレイド参加でポイント獲得。</li><li>限定ショップは日本時間の0時・3時・6時・12時・18時・21時にランダムな空き地で開店し、20分で閉店。</li><li>時間限定の大型レイドは各イベント開始30分後に発生。報酬枠は深夜9,000pt、未明6,000pt、朝12,000pt、昼6,000pt、夕9,000pt、夜7,000pt。参加者の貢献に応じて分配されます。</li><li>大型レイド終了後に同じ世界へ休憩所が10分間出現。滞在すると気力が回復し、そこでは占領や侵攻が起きません。</li></ul><p class="demo-warning">この世界はまだブラウザー内だけのデモです。別の端末とは領地やポイントを共有しません。</p><button class="primary-button" data-close>冒険へ戻る</button></div></dialog>
+  <dialog id="helpDialog"><div class="dialog-inner"><button class="dialog-close" data-close aria-label="閉じる">×</button><p class="eyebrow">FIELD GUIDE</p><h2>はじめての方へ · 遊び方</h2><p class="tile-description">マップを歩いて土地を見つけ、家を飾って収入を育てながら、時には相手の領地へ挑むゲームです。</p><button id="guideStartBtn" class="primary-button guide-start-button" type="button">🧭 空き地購入・占領ガイドをはじめる</button><ul><li>マップで目的地を選ぶと、自動で道を歩いていきます。</li><li>空き地まで歩き、現地で表示されたポイントを払うと自分の土地になります。6件目以降は価格がなだらかに上がります。</li><li>相手の土地は、目的地にして到着すると占領開始。通り道では占領しません。持ち主本人がオンラインでそのマスにいる時だけ、防衛で時間が延びます。</li><li>気力は100段階。占領中は時間に応じて減り、土地を取ると5回復、時間経過で回復します。通りかかるだけでは減りません。</li><li>何度も攻めると必要時間が延びます。気力は休息や時間で回復します。</li><li>道具屋は飾りと攻撃の2ページ。攻撃装備は各種類3個まで購入・強化でき、占領時間を短縮します。攻撃倍率は装備1個につき基本4%＋強化1Lvごとに1.5%（軍旗は1.4倍）です。</li><li>占領時間は「max(最低秒数, ceil(基礎秒数 × 現地防衛倍率 × 土地防衛倍率 ÷ 攻撃倍率))」です。敵地は最低20秒、奪還は最低8秒。基礎時間は再挑戦ごとに30秒増え、最大240秒です。攻撃装備は1個につき基本4%＋強化1Lvごとに1.5%を攻撃倍率へ加算（軍旗は1.4倍）。NPCの土地防衛は1Lvごとに12%増えます。</li><li>領地収入は現行値から40%減っています。離席・ログアウト中もポイントは増えますが、獲得量は通常の10%です。</li><li>NPCは不在のあなたの土地を優先して攻めます。攻められた土地は防衛を学び、領地を失うと攻撃力を強化します。奪われた土地は現地で取り返せます。</li><li>ミニレイドは5〜10分おき、大型レイドは約20分おきに空き地で発生します。ミニレイドは参加者ごとに15秒延長（最大1分）、大型は30秒延長（最大5分）。残り時間はレイド欄で確認できます。</li><li>ポイント依頼は日本時間の毎日0時・3時・6時・12時・18時・21時に2時間開催し、各時間帯1回達成できます。深夜0時は土地を増やして2,000pt、未明3時はレイド参加で1,200pt、朝6時は土地で2,400pt、昼12時と夜21時は限定店で買い物、夕18時はレイド参加でポイント獲得。</li><li>限定ショップは日本時間の0時・3時・6時・12時・18時・21時にランダムな空き地で開店し、20分で閉店。</li><li>時間限定の大型レイドは各イベント開始30分後に発生。報酬枠は深夜9,000pt、未明6,000pt、朝12,000pt、昼6,000pt、夕9,000pt、夜7,000pt。参加者の貢献に応じて分配されます。</li><li>大型レイド終了後に同じ世界へ休憩所が10分間出現。滞在すると気力が回復し、そこでは占領や侵攻が起きません。</li></ul><p class="demo-warning">この世界はまだブラウザー内だけのデモです。別の端末とは領地やポイントを共有しません。</p><button class="primary-button" data-close>冒険へ戻る</button></div></dialog>
   <dialog id="eventListDialog" class="event-list-dialog"><div class="dialog-inner"><button id="eventListClose" class="dialog-close" aria-label="イベント一覧を閉じる">×</button><p class="eyebrow">24H EVENT SCHEDULE · JST</p><h2>24時間イベント一覧</h2><div class="event-timeline"><div class="event-timeline-row"><time>00:00</time><div><strong>🌙 深夜イベント</strong><p>2時間開催。土地を1つ購入・占領で2,000pt。限定ショップも開店し、00:30に時間限定大型レイド。</p></div></div><div class="event-timeline-row"><time>03:00</time><div><strong>🌌 未明イベント</strong><p>2時間開催。レイドでダメージを与えると1,200pt。限定ショップ開店、03:30に時間限定大型レイド。</p></div></div><div class="event-timeline-row"><time>06:00</time><div><strong>🌅 朝イベント</strong><p>2時間開催。土地を1つ購入・占領で2,400pt。限定ショップ開店、06:30に時間限定大型レイド。</p></div></div><div class="event-timeline-row"><time>12:00</time><div><strong>☀️ 昼イベント</strong><p>2時間開催。限定ショップで買い物すると1,200pt。12:30に時間限定大型レイド。</p></div></div><div class="event-timeline-row"><time>18:00</time><div><strong>🌆 夕イベント</strong><p>2時間開催。レイドでダメージを与えると1,800pt。限定ショップ開店、18:30に時間限定大型レイド。</p></div></div><div class="event-timeline-row"><time>21:00</time><div><strong>🌙 夜イベント</strong><p>2時間開催。限定ショップで買い物すると1,600pt。21:30に時間限定大型レイド。</p></div></div></div><h3 class="event-list-subtitle">ランダム・短時間イベント</h3><div class="event-recurring-list"><div class="event-recurring-item"><strong>⚔️ ミニレイド</strong><p>5〜10分おき。発生中だけ画面に表示。</p></div><div class="event-recurring-item"><strong>👑 大型レイド</strong><p>約20分おき。通常の大型レイドとは別に、上の時間イベント開始30分後にも時間限定大型レイドが発生。</p></div><div class="event-recurring-item"><strong>🌱 あきとちたいむ</strong><p>約1時間に1回、3分だけ発生。指定の空き地を購入すると+3,000pt。</p></div><div class="event-recurring-item"><strong>🍃 森の落としもの</strong><p>8〜15分おき、90秒だけ発生。指定地点へ到着すると+800pt。</p></div><div class="event-recurring-item"><strong>🛒 限定ショップ</strong><p>0・3・6・12・18・21時にランダムな空き地で20分開店。</p></div><div class="event-recurring-item"><strong>🍵 休憩所</strong><p>大型レイド終了後に10分間出現。滞在中は気力がじんわり回復。</p></div></div><p class="event-list-note">※ 時刻はすべて日本時間（JST）。サブイベントは発生中だけフィールド上部に表示されます。</p><button id="eventListCloseBottom" class="primary-button" type="button">一覧を閉じる</button></div></dialog>
   <dialog id="welcomeDialog"><div class="dialog-inner"><p class="eyebrow">はじめての冒険</p><h2>遊び方は3つだけ</h2><ul><li>行きたいマスを選ぶと、自動で歩きます。空き地に着いたら土地を買えます。</li><li>土地は時間でポイントを生み、家の飾りで収入が増えます。</li><li>相手の土地は占領できます。奪われた自分の土地も、現地に行けば取り返せます。</li></ul><button id="welcomeStartBtn" class="primary-button" type="button">わかった！名前を決める</button></div></dialog>
   <dialog id="nameDialog"><form method="dialog" class="dialog-inner"><p class="eyebrow">ADVENTURER REGISTRATION</p><h2>冒険者ギルドへようこそ</h2><p class="tile-description">この世界で使う名前を決めてください。</p><input id="nameInput" maxlength="12" placeholder="冒険者の名前" autocomplete="nickname" required><button class="primary-button" value="save">冒険を始める</button></form></dialog>
+  <script>
+    (()=>{
+      const nativePow=Math.pow.bind(Math);
+      Math.pow=function(base,exponent){
+        if(base===2&&Number.isInteger(exponent)&&exponent>=2){
+          const smoothedPrice=Math.round((6400*nativePow(1.15,exponent-2))/100)*100;
+          return smoothedPrice/1600;
+        }
+        return nativePow(base,exponent);
+      };
+    })();
+  </script>
   <script src="game.js?v=68"></script>
   <script>
     (()=>{
@@ -117,6 +132,14 @@
         panel.classList.toggle('no-active-events',active===0);
       };
       if(panel){new MutationObserver(syncBonusEvents).observe(panel,{subtree:true,attributes:true,attributeFilter:['class']});syncBonusEvents();setInterval(syncBonusEvents,1000)}
+      const map=document.getElementById('map');
+      const syncVacantMarker=()=>{
+        document.querySelectorAll('.cell.vacant-event-land .event-land-marker').forEach(mark=>{
+          if(mark.textContent!=='🌱 +3000')mark.textContent='🌱 +3000';
+          mark.title='あきとちたいむ対象地・購入で+3,000pt';
+        });
+      };
+      if(map){new MutationObserver(syncVacantMarker).observe(map,{childList:true,subtree:true,attributes:true,attributeFilter:['class']});syncVacantMarker();setInterval(syncVacantMarker,1000)}
       const raidStatus=document.getElementById('raidStatus');
       const raidTime=document.getElementById('raidTimeRemaining');
       const syncRaidTime=()=>{
