@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#172b2b">
   <title>こもれび開拓団 — 冒険と陣地のRPG試作</title>
-  <link rel="stylesheet" href="style.css?v=25">
+  <link rel="stylesheet" href="style.css?v=26">
 </head>
 <body>
   <header class="topbar">
@@ -22,7 +22,7 @@
         <div class="resource-card morale-card"><div class="morale-label"><span>⚡ 気力</span><strong id="moraleValue">100.00 / 100</strong></div><div class="bar"><i id="moraleBar"></i></div></div>
       </div>
       <div id="worldAlert" class="world-alert hidden" role="status" aria-live="assertive"><span>速報</span><strong id="worldAlertText"></strong></div>
-      <details id="raidPanel" class="panel raid-panel"><summary><span>⚔️ 共同レイド</span><span class="raid-summary-state"><b id="raidStatus">準備中</b><small id="raidTimer">次回まで --秒</small></span></summary><div class="raid-content"><div class="raid-boss-row"><strong id="raidBossName">古代森の守り手</strong><span id="raidHp">仲間と協力して討伐</span></div><div class="bar raid-bar"><i id="raidBar"></i></div><p id="raidTeam" class="raid-team">NPC隊員が自動で戦います。参加して与えたダメージに応じて報酬を分配。</p><button id="raidJoinBtn" class="small-button raid-join" disabled>開催中に参加</button><p class="shop-note">10分ごとに開催。NPC隊員と一緒に120秒攻撃し、貢献度に応じて最大8,000ptを分配します。</p></div></details>
+      <details id="raidPanel" class="panel raid-panel"><summary><span>⚔️ 共同レイド</span><span class="raid-summary-state"><b id="raidStatus">準備中</b><small id="raidTimer">次回まで --秒</small></span></summary><div class="raid-content"><div class="raid-boss-row"><strong id="raidBossName">古代森の守り手</strong><span id="raidHp">仲間と協力して討伐</span></div><div class="bar raid-bar"><i id="raidBar"></i></div><p id="raidTeam" class="raid-team">NPC隊員が自動で戦います。参加して与えたダメージに応じて報酬を分配。</p><button id="raidJoinBtn" class="small-button raid-join" disabled>開催中に参加</button><p class="shop-note">初回は入った時に開催。以降10分ごとに、NPC隊員と120秒攻撃し、貢献度に応じて最大8,000ptを分配します。</p></div></details>
       <div id="worldMapView">
         <div class="map-wrap"><div id="map" class="map" role="grid" aria-label="ひだまりの原っぱマップ"></div></div>
         <details class="map-details"><summary>マップの見方・CPU開拓者</summary><div class="map-details-content"><div class="map-legend"><span><i class="legend-swatch yours"></i>あなた</span><span><i class="legend-swatch other"></i>CPU開拓者</span><span><i class="legend-swatch wild"></i>無人地</span><span><i class="legend-swatch path"></i>草地</span><span><i class="online-self-legend-dot"></i>あなたがオンライン<span><i class="online-legend-dot"></i>他プレイヤーがオンライン</span></span></div><p class="shop-note">🤖 CPU開拓者が自動で領地を広げています。青い光はあなた、緑の光は他プレイヤーやCPUがオンラインで滞在中のマス、⚔️は侵攻中の土地です。</p></div></details>
@@ -67,6 +67,6 @@
 
   <dialog id="helpDialog"><div class="dialog-inner"><button class="dialog-close" data-close aria-label="閉じる">×</button><p class="eyebrow">FIELD GUIDE</p><h2>はじめての方へ · 遊び方</h2><p class="tile-description">マップを歩いて土地を見つけ、家を飾って収入を育てながら、時には相手の領地へ挑むゲームです。</p><ul><li>マップで目的地を選ぶと、自動で道を歩いていきます。</li><li>空き地まで歩き、現地で3,360ptを払うと自分の土地になります。</li><li>相手の土地は、目的地にして到着すると占領開始。通り道では占領しません。持ち主本人がオンラインでそのマスにいる時だけ、防衛で時間が延びます。</li><li>気力は100段階。占領中は時間に応じて減り、土地を取ると50回復、時間経過で回復します。通りかかるだけでは減りません。</li><li>何度も攻めると必要時間が延びます。気力は休息や時間で回復します。</li><li>道具屋は飾りと防衛の2ページ。防衛装置はマップで自分の土地を選んでから、その土地に設置・強化します。装置1個につき防衛力22%、強化1Lvごとにさらに8%上がり、その土地へのCPU侵攻時間を延ばします。</li><li>占領時間は「max(最低秒数, ceil(基礎秒数 × 現地防衛倍率 × 土地防衛倍率 ÷ 攻撃倍率))」です。敵地は最低20秒、奪還は最低8秒。基礎時間は再挑戦ごとに30秒増え、最大240秒です。攻撃装備は1個につき基本4%＋強化1Lvごとに1.5%を攻撃倍率へ加算（軍旗は1.4倍）。NPCの土地防衛は1Lvごとに12%増えます。</li><li>領地収入は現行値から40%減っています。離席・ログアウト中は、その収入率の50%分ずつポイントが減ります。</li><li>NPCは不在のあなたの土地を優先して攻めます。攻められた土地は防衛を学び、領地を失うと攻撃力を強化します。奪われた土地は現地で取り返せます。</li><li>領地の限定ショップは2分で閉まります。地図の買い物マークを選んで急ごう。</li></ul><p class="demo-warning">この世界はまだブラウザー内だけのデモです。別の端末とは領地やポイントを共有しません。</p><button class="primary-button" data-close>冒険へ戻る</button></div></dialog>
   <dialog id="nameDialog"><form method="dialog" class="dialog-inner"><p class="eyebrow">ADVENTURER REGISTRATION</p><h2>冒険者ギルドへようこそ</h2><p class="tile-description">この世界で使う名前を決めてください。</p><input id="nameInput" maxlength="12" placeholder="冒険者の名前" autocomplete="nickname" required><button class="primary-button" value="save">冒険を始める</button></form></dialog>
-  <script src="game.js?v=25"></script>
+  <script src="game.js?v=26"></script>
 </body>
 </html>
