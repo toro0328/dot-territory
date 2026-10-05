@@ -251,3 +251,16 @@
 .raid-stats span{color:#b9c2ac;text-align:right}
 .raid-cost-note{display:block;margin-top:5px;color:#d6a780;font-size:8px}
 @media(max-width:600px){.raid-panel{padding:6px 8px;margin:5px 0;font-size:9px}.raid-panel .raid-go{padding:5px 8px;font-size:8px}.raid-details{padding:7px}.raid-stats{font-size:7px}}
+.points-card{width:100%;text-align:left;cursor:pointer;color:inherit;font-family:inherit}
+.points-card:hover{border-color:#ead386;filter:brightness(1.08)}
+.points-card .points-state{font-size:8px;color:#c1d5a4;margin-top:2px}
+.points-card .points-card-heading small{font-size:7px;color:#aeb99c;margin-left:4px}
+.offline-result{display:flex;width:100%;align-items:center;gap:7px;margin:0 0 8px;padding:8px 10px;text-align:left;background:linear-gradient(110deg,#3a4936,#443c30);border:2px solid #e1c276;box-shadow:0 3px #14211d;color:#f4e4b0;font:9px 'DotGothic16',sans-serif}
+.offline-result strong{white-space:nowrap;color:#ffe394;font-size:10px}
+.offline-result span{flex:1;line-height:1.5}
+.offline-result small{white-space:nowrap;color:#b7c2a4;font-size:7px}
+.pointsDialog{}.point-current-rate{padding:8px;background:#172a28;border:1px solid #657650;color:#f0dc94;font:10px 'DotGothic16',sans-serif}
+.cell.other.lost{background:#d18ba3!important;border-color:#ffd0df!important;box-shadow:inset 0 -4px #a65c78,0 0 5px #ffb5cf!important}
+.lost-land-mark{top:1px;left:1px;right:auto;bottom:auto;z-index:6;padding:1px 3px;background:#9a405f;border:1px solid #ffd6e3;border-radius:2px;color:#fff3f7;font:700 7px/1.1 'DotGothic16',sans-serif;box-shadow:0 1px 2px #36202b}
+@media(max-width:600px){.offline-result{gap:5px;margin-bottom:6px;padding:6px 7px;font-size:8px}.offline-result strong{font-size:9px}.offline-result small{font-size:6px}.points-card .points-state{font-size:7px}}
+.offline-result span{min-width:0;overflow-wrap:anywhere}
