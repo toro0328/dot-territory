@@ -191,3 +191,7 @@
 .top-actions .help-jump{padding:7px 9px;font-size:9px;white-space:nowrap}
 .dialog-inner{max-height:90vh;max-height:90dvh;overflow-y:auto}
 @media(max-width:600px){.top-actions .help-jump{padding:5px 6px;font-size:8px}.shop-tabs{gap:4px;margin:7px 0 5px}.shop-tabs button{padding:7px 2px;font-size:8px}.shop-page-note{font-size:8px;min-height:2.7em}}
+
+.cell.self-online-presence{outline-color:#56d9ff;box-shadow:inset 0 0 0 2px #56d9ff,0 0 10px #28b8ef}
+.self-online-presence-mark{color:#56d9ff;text-shadow:0 0 5px #063847,0 1px 1px #102017}
+.online-self-legend-dot{display:inline-block;width:9px;height:9px;border-radius:50%;background:#56d9ff;box-shadow:0 0 5px #56d9ff}
