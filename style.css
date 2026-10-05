@@ -234,3 +234,6 @@
 .raid-location{font-size:8px;color:#f2d987;margin:6px 0 3px}
 .raid-go{margin:0 4px 0 0;padding:5px 9px;font-size:8px}
 @media(max-width:600px){.map-mark-svg{width:15px;height:15px}.raid-site-marker{width:15px;height:15px}.raid-site-marker .map-mark-svg{width:12px;height:12px}.limited-shop-mark{width:14px;height:14px}.limited-shop-mark .map-mark-svg{width:11px;height:11px}}
+.legend-owner-chip{width:14px;height:14px;padding:0;display:inline-grid;place-items:center}.legend-owner-chip svg{width:12px;height:12px}
+.legend-defense-chip{width:14px;height:15px;padding:0;background:none;clip-path:none;border:0}.legend-defense-chip svg{width:14px;height:15px}
+.legend-attack-chip{width:14px;height:14px;padding:0;background:none;border-radius:0}.legend-attack-chip svg{width:14px;height:14px;display:block}
