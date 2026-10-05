@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#172b2b">
   <title>こもれび開拓団 — 冒険と陣地のRPG試作</title>
-  <link rel="stylesheet" href="style.css?v=21">
+  <link rel="stylesheet" href="style.css?v=22">
 </head>
 <body>
   <header class="topbar">
@@ -37,7 +37,7 @@
         <div class="target-content">
           <p id="tileDescription" class="tile-description">家があなたの冒険の始まり。室内に入り、家具を飾ろう。</p>
           <p id="occupationEstimate" class="occupation-estimate hidden" aria-live="polite"></p>
-          <div id="occupation" class="occupation hidden"><div class="occ-head"><span id="occLabel">占領中…</span><small id="occDuration" class="occ-duration"></small><b id="occTime">残り30秒</b></div><div class="bar"><i id="occBar"></i></div><button id="interruptBtn" class="text-button">中断</button></div>
+          <div id="occupation" class="occupation hidden"><div class="occ-head"><span id="occLabel">占領中…</span><small id="occDuration" class="occ-duration"></small><b id="occTime">残り30秒</b></div><small id="occFormula" class="occ-formula"></small><div class="bar"><i id="occBar"></i></div><button id="interruptBtn" class="text-button">中断</button></div>
           <div id="tileActions" class="tile-actions"></div>
           <section id="limitedShopPanel" class="limited-shop-panel hidden" aria-live="polite"><div class="section-title"><div><p class="eyebrow">LIMITED SHOP</p><h2>領地の出張商人</h2></div><b id="limitedShopTimer" class="limited-timer">閉店まで --秒</b></div><p class="shop-note">今だけの割引品。閉店時刻になる前に購入しよう。</p><div id="limitedShopOffers" class="limited-shop-offers"></div></section>
         </div>
@@ -66,6 +66,6 @@
 
   <dialog id="helpDialog"><div class="dialog-inner"><button class="dialog-close" data-close aria-label="閉じる">×</button><p class="eyebrow">FIELD GUIDE</p><h2>はじめての方へ · 遊び方</h2><p class="tile-description">マップを歩いて土地を見つけ、家を飾って収入を育てながら、時には相手の領地へ挑むゲームです。</p><ul><li>マップで目的地を選ぶと、自動で道を歩いていきます。</li><li>空き地まで歩き、現地で3,360ptを払うと自分の土地になります。</li><li>相手の土地は、目的地にして到着すると占領開始。通り道では占領しません。持ち主本人がオンラインでそのマスにいる時だけ、防衛で時間が延びます。</li><li>気力は100段階。占領中は時間に応じて減り、土地を取ると50回復、時間経過で回復します。通りかかるだけでは減りません。</li><li>何度も攻めると必要時間が延びます。気力は休息や時間で回復します。</li><li>道具屋は飾り・収入、防衛、攻撃の3ページ。家具は各種類3個までで、強化は何度でもできます。</li><li>操作中の収入は以前の約半分です。2分操作がない時や離席中はポイントが少しずつ減ります。</li><li>CPU開拓者も自動で土地を取り合います。奪われた土地は現地で取り返せます。</li><li>領地の限定ショップは2分で閉まります。地図の買い物マークを選んで急ごう。</li></ul><p class="demo-warning">この世界はまだブラウザー内だけのデモです。別の端末とは領地やポイントを共有しません。</p><button class="primary-button" data-close>冒険へ戻る</button></div></dialog>
   <dialog id="nameDialog"><form method="dialog" class="dialog-inner"><p class="eyebrow">ADVENTURER REGISTRATION</p><h2>冒険者ギルドへようこそ</h2><p class="tile-description">この世界で使う名前を決めてください。</p><input id="nameInput" maxlength="12" placeholder="冒険者の名前" autocomplete="nickname" required><button class="primary-button" value="save">冒険を始める</button></form></dialog>
-  <script src="game.js?v=21"></script>
+  <script src="game.js?v=22"></script>
 </body>
 </html>
