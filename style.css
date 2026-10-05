@@ -184,7 +184,7 @@
 .online-legend-dot{display:inline-block;width:9px;height:9px;border-radius:50%;background:#74ff91;box-shadow:0 0 5px #74ff91}
 
 /* Clear three-page shop navigation and a visible guide entry. */
-.shop-tabs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;margin:10px 0 7px}
+.shop-tabs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px;margin:10px 0 7px}
 .shop-tabs button{min-width:0;padding:8px 5px;background:#20332d;border:1px solid #647750;color:#c4cdae;font:9px 'DotGothic16',sans-serif;box-shadow:inset 0 -2px #152722}
 .shop-tabs button.active{background:linear-gradient(#e4ca79,#b39146);border-color:#f0db8f;color:#283a30;box-shadow:inset 0 -2px #92743b}
 .shop-page-note{min-height:2.8em;margin:4px 0 8px;color:#aeb99c;font-size:9px;line-height:1.5}
