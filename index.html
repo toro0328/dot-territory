@@ -24,7 +24,10 @@
     .time-event-panel{margin:4px 0 5px!important;padding:4px 7px!important}.time-event-head{font-size:8px!important}.time-event-panel p{display:none!important}
     .bonus-event.event-inactive,.bonus-events-panel.no-active-events{display:none!important}
     .event-list-dialog .dialog-inner{width:min(92vw,560px);max-height:min(82vh,720px);overflow:auto}.event-list-dialog h2{margin-bottom:10px}.event-timeline{display:grid;gap:6px;margin:10px 0}.event-timeline-row{display:grid;grid-template-columns:56px 1fr;gap:9px;padding:8px 9px;background:#1b302b;border:1px solid #536e56}.event-timeline-row time{font:10px 'DotGothic16',sans-serif;color:#f1d783}.event-timeline-row strong{display:block;font:10px 'DotGothic16',sans-serif;color:#eee1aa}.event-timeline-row p{margin:3px 0 0;color:#b9c3aa;font-size:9px;line-height:1.45}.event-list-subtitle{margin:14px 0 6px;font:10px 'DotGothic16',sans-serif;color:#e3ca7a}.event-recurring-list{display:grid;gap:6px}.event-recurring-item{padding:8px 9px;background:#21362f;border-left:3px solid #7fa56f}.event-recurring-item strong{font-size:10px;color:#e8ddb0}.event-recurring-item p{margin:3px 0 0;color:#b9c3aa;font-size:9px;line-height:1.45}.event-list-note{margin:10px 0 0;color:#9eab98;font-size:8px;line-height:1.5}
-    @media(max-width:600px){.world-title-row{gap:5px}.world-title-row .event-list-button{padding:4px 6px;font-size:7px}.time-event-panel{padding:3px 5px!important;margin:3px 0 4px!important}.time-event-head{font-size:7px!important}.event-list-dialog .dialog-inner{width:94vw;padding:16px}.event-timeline-row{grid-template-columns:48px 1fr;padding:7px}.event-timeline-row time,.event-timeline-row strong{font-size:9px}}
+    #helpDialog .dialog-close,#eventListDialog .dialog-close{appearance:none;-webkit-appearance:none;width:28px;height:28px;padding:0;display:grid;place-items:center;background:linear-gradient(#3b5649,#2a4037);border:1px solid #71815c;border-radius:4px;color:#f1d783;font:700 17px/1 'DotGothic16',sans-serif;box-shadow:inset 0 -2px #1d2f29,0 1px 3px #0e1715;cursor:pointer}
+    #helpDialog .dialog-close:hover,#eventListDialog .dialog-close:hover{filter:brightness(1.12)}
+    .raid-time-remaining{display:block;margin:5px 0 7px;padding:4px 7px;background:#1b2d29;border:1px solid #6f7956;color:#f2d786;font:9px 'DotGothic16',sans-serif;text-align:center}
+    @media(max-width:600px){.world-title-row{gap:5px}.world-title-row .event-list-button{padding:4px 6px;font-size:7px}.time-event-panel{padding:3px 5px!important;margin:3px 0 4px!important}.time-event-head{font-size:7px!important}.event-list-dialog .dialog-inner{width:94vw;padding:16px}.event-timeline-row{grid-template-columns:48px 1fr;padding:7px}.event-timeline-row time,.event-timeline-row strong{font-size:9px}#helpDialog .dialog-close,#eventListDialog .dialog-close{width:26px;height:26px;font-size:15px}.raid-time-remaining{font-size:8px}}
   </style>
 </head>
 <body>
@@ -64,7 +67,7 @@
           <p id="occupationEstimate" class="occupation-estimate hidden" aria-live="polite"></p>
           <div id="occupation" class="occupation hidden"><div class="occ-head"><span id="occLabel">占領中…</span><small id="occDuration" class="occ-duration"></small><b id="occTime">残り30秒</b></div><small id="occFormula" class="occ-formula"></small><small id="occRounding" class="occ-rounding"></small><div class="bar"><i id="occBar"></i></div><button id="interruptBtn" class="text-button">中断</button></div>
           <div id="tileActions" class="tile-actions"></div>
-          <section id="raidDetails" class="raid-details hidden" aria-live="polite"><div class="raid-boss-row"><strong id="raidBossName">古代森の守り手</strong><span id="raidHp">HP 1200 / 1200</span></div><div class="bar raid-bar"><i id="raidBar"></i></div><div class="raid-stats"><b id="raidProgress">削り 0%</b><span id="raidContribution">あなたの貢献 0ダメージ（0%）</span></div><p id="raidLocation" class="raid-location"></p><p id="raidTeam" class="raid-team"></p><small id="raidCostNote" class="raid-cost-note">現地で参加中は気力を消費します。</small></section>
+          <section id="raidDetails" class="raid-details hidden" aria-live="polite"><div class="raid-boss-row"><strong id="raidBossName">古代森の守り手</strong><span id="raidHp">HP 1200 / 1200</span></div><b id="raidTimeRemaining" class="raid-time-remaining">残り時間 --秒</b><div class="bar raid-bar"><i id="raidBar"></i></div><div class="raid-stats"><b id="raidProgress">削り 0%</b><span id="raidContribution">あなたの貢献 0ダメージ（0%）</span></div><p id="raidLocation" class="raid-location"></p><p id="raidTeam" class="raid-team"></p><small id="raidCostNote" class="raid-cost-note">現地で参加中は気力を消費します。</small></section>
           <section id="limitedShopPanel" class="limited-shop-panel hidden" aria-live="polite"><div class="section-title"><div><p class="eyebrow">LIMITED SHOP</p><h2>領地の出張商人</h2></div><b id="limitedShopTimer" class="limited-timer">閉店まで --秒</b></div><p class="shop-note">今だけの割引品。閉店時刻になる前に購入しよう。</p><div id="limitedShopOffers" class="limited-shop-offers"></div></section>
         </div>
       </details>
@@ -114,6 +117,14 @@
         panel.classList.toggle('no-active-events',active===0);
       };
       if(panel){new MutationObserver(syncBonusEvents).observe(panel,{subtree:true,attributes:true,attributeFilter:['class']});syncBonusEvents();setInterval(syncBonusEvents,1000)}
+      const raidStatus=document.getElementById('raidStatus');
+      const raidTime=document.getElementById('raidTimeRemaining');
+      const syncRaidTime=()=>{
+        if(!raidStatus||!raidTime)return;
+        const match=raidStatus.textContent.match(/あと(\d+)秒/);
+        raidTime.textContent=match?`残り時間 ${match[1]}秒`:'残り時間 --秒';
+      };
+      if(raidStatus){new MutationObserver(syncRaidTime).observe(raidStatus,{childList:true,subtree:true,characterData:true});syncRaidTime();setInterval(syncRaidTime,1000)}
       const dialog=document.getElementById('eventListDialog');
       document.getElementById('eventListBtn')?.addEventListener('click',()=>dialog?.showModal());
       document.getElementById('eventListClose')?.addEventListener('click',()=>dialog?.close());
