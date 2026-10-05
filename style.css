@@ -144,3 +144,36 @@
   .shop-dialog-inner{max-height:calc(100dvh - 16px);padding:30px 7px 7px;border-radius:8px 8px 0 0}
   .shop-dialog .shop-panel{padding:5px}.shop-dialog .shop-items{max-height:38vh}
 }
+
+/* Keep the two resources used during play visible; only history and extra stats fold away. */
+.resource-hud{display:grid;grid-template-columns:minmax(125px,.8fr) minmax(150px,1.2fr);gap:8px;margin:0 0 9px}
+.resource-card{min-height:58px;padding:8px 11px;background:linear-gradient(140deg,#172a28,#203a32);border:2px solid #61754e;box-shadow:inset 0 0 0 2px #2b4539;display:flex;flex-direction:column;justify-content:center}
+.resource-card>span,.morale-label{font:9px 'DotGothic16',sans-serif;color:#c1c8a5}
+.points-card>div{display:flex;align-items:baseline;gap:4px;color:#f4dd8e}
+.points-card strong{font:26px 'DotGothic16',sans-serif;line-height:1.1;color:#fff0be;text-shadow:2px 2px #202719}
+.points-card small{font:10px 'DotGothic16',sans-serif;color:#e7ce7d}
+.morale-card{gap:4px}.morale-label{display:flex;justify-content:space-between;align-items:center;font-size:11px}
+.morale-label strong{font:16px 'DotGothic16',sans-serif;color:#fff0be}
+.morale-card .bar{height:11px;margin:0;border-color:#778459}.morale-card .bar i{background:linear-gradient(90deg,#76b67b,#c4d57f);box-shadow:0 0 8px #94ca72}
+.world-alert{display:flex;align-items:center;gap:8px;min-height:34px;margin:0 0 8px;padding:6px 9px;background:linear-gradient(90deg,#5b342d,#392c27);border:2px solid #d08b56;box-shadow:0 2px 0 #241e1a;color:#fff0cf;font-size:11px}
+.world-alert.hidden{display:none!important}.world-alert>span{flex:none;padding:2px 5px;background:#b44d3e;color:white;font:9px 'DotGothic16',sans-serif}
+.world-alert strong{font-size:10px;line-height:1.4}.world-alert.alert-flash{animation:alertPulse .45s ease-out 2}
+@keyframes alertPulse{50%{filter:brightness(1.4);transform:translateY(-1px)}}
+.profile-note{margin:5px 0 0;color:#9ca993;font-size:8px}
+.compact-log .section-title{justify-content:flex-start;gap:8px;margin:0}
+.compact-log .section-title h2{flex:none}
+.compact-log .log-preview{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;text-align:left;font:8px 'M PLUS Rounded 1c',sans-serif;color:#a9b39e}
+.compact-log .event-log{max-height:76px}
+.compact-log .event-log li{padding:3px 0;font-size:8px;line-height:1.35}
+@media(max-width:600px){
+  .world-stats{margin:5px 0 6px}
+  .resource-hud{grid-template-columns:1fr 1fr;gap:6px;margin-bottom:7px}
+  .resource-card{min-height:55px;padding:6px 8px}
+  .resource-card>span{font-size:8px}.points-card strong{font-size:24px}
+  .morale-label{font-size:10px}.morale-label strong{font-size:15px}
+  .morale-card .bar{height:10px}
+  .world-alert{min-height:32px;margin-bottom:6px;padding:5px 7px;font-size:10px}
+  .world-alert strong{font-size:9px}
+  .compact-log .section-title{gap:6px}.compact-log .log-preview{font-size:7px}
+  .compact-log .event-log{max-height:68px}
+}
