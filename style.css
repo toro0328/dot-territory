@@ -261,6 +261,5 @@
 .offline-result small{white-space:nowrap;color:#b7c2a4;font-size:7px}
 .pointsDialog{}.point-current-rate{padding:8px;background:#172a28;border:1px solid #657650;color:#f0dc94;font:10px 'DotGothic16',sans-serif}
 .cell.other.lost{background:#d18ba3!important;border-color:#ffd0df!important;box-shadow:inset 0 -4px #a65c78,0 0 5px #ffb5cf!important}
-.lost-land-mark{top:1px;left:1px;right:auto;bottom:auto;z-index:6;padding:1px 3px;background:#9a405f;border:1px solid #ffd6e3;border-radius:2px;color:#fff3f7;font:700 7px/1.1 'DotGothic16',sans-serif;box-shadow:0 1px 2px #36202b}
 @media(max-width:600px){.offline-result{gap:5px;margin-bottom:6px;padding:6px 7px;font-size:8px}.offline-result strong{font-size:9px}.offline-result small{font-size:6px}.points-card .points-state{font-size:7px}}
 .offline-result span{min-width:0;overflow-wrap:anywhere}
