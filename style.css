@@ -195,3 +195,5 @@
 .cell.self-online-presence{outline-color:#56d9ff;box-shadow:inset 0 0 0 2px #56d9ff,0 0 10px #28b8ef}
 .self-online-presence-mark{color:#56d9ff;text-shadow:0 0 5px #063847,0 1px 1px #102017}
 .online-self-legend-dot{display:inline-block;width:9px;height:9px;border-radius:50%;background:#56d9ff;box-shadow:0 0 5px #56d9ff}
+
+.occupation-estimate{font-size:8px;line-height:1.4;color:#91a18d;opacity:.78;margin:2px 0 6px}.occupation-estimate.hidden{display:none}
