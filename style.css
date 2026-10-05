@@ -242,3 +242,12 @@
 .cell-icon{line-height:1}
 .cell.other.lost{background:#c17c93!important;border-color:#f0b6c7!important;box-shadow:inset 0 -4px #92566e!important}
 .legend-swatch.lost{background:#c17c93;border-color:#f0b6c7}
+.raid-panel{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:8px 11px;margin:8px 0;border-color:#d17b66;color:#ffc18d;font:11px 'DotGothic16',sans-serif}
+.raid-panel.hidden{display:none!important}.raid-panel .raid-go{margin:0;white-space:nowrap}
+.raid-details{margin-top:7px;padding:9px;background:linear-gradient(145deg,#273d3a,#202f30);border:1px solid #d17b66;box-shadow:inset 0 0 0 2px #30483c}
+.raid-details.hidden{display:none!important}.raid-details .raid-boss-row{margin-bottom:2px}
+.raid-details .raid-bar i{background:linear-gradient(90deg,#d97754,#e6bd62);transition:width .4s linear}
+.raid-stats{display:flex;justify-content:space-between;gap:8px;margin-top:5px;color:#ecd787;font:8px 'DotGothic16',sans-serif}
+.raid-stats span{color:#b9c2ac;text-align:right}
+.raid-cost-note{display:block;margin-top:5px;color:#d6a780;font-size:8px}
+@media(max-width:600px){.raid-panel{padding:6px 8px;margin:5px 0;font-size:9px}.raid-panel .raid-go{padding:5px 8px;font-size:8px}.raid-details{padding:7px}.raid-stats{font-size:7px}}
