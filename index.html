@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#172b2b">
   <title>こもれび開拓団 — 冒険と陣地のRPG試作</title>
-  <link rel="stylesheet" href="style.css?v=13">
+  <link rel="stylesheet" href="style.css?v=14">
 </head>
 <body>
   <header class="topbar">
@@ -24,7 +24,7 @@
       <div id="worldAlert" class="world-alert hidden" role="status" aria-live="assertive"><span>速報</span><strong id="worldAlertText"></strong></div>
       <div id="worldMapView">
         <div class="map-wrap"><div id="map" class="map" role="grid" aria-label="ひだまりの原っぱマップ"></div></div>
-        <details class="map-details"><summary>マップの見方・CPU開拓者</summary><div class="map-details-content"><div class="map-legend"><span><i class="legend-swatch yours"></i>あなた</span><span><i class="legend-swatch other"></i>CPU開拓者</span><span><i class="legend-swatch wild"></i>無人地</span><span><i class="legend-swatch path"></i>草地</span></div><p class="shop-note">🤖 CPU開拓者が自動で領地を広げています。⚔️の表示がある土地は侵攻中です。</p></div></details>
+        <details class="map-details"><summary>マップの見方・CPU開拓者</summary><div class="map-details-content"><div class="map-legend"><span><i class="legend-swatch yours"></i>あなた</span><span><i class="legend-swatch other"></i>CPU開拓者</span><span><i class="legend-swatch wild"></i>無人地</span><span><i class="legend-swatch path"></i>草地</span><span><i class="online-legend-dot"></i>オンライン滞在中</span></div><p class="shop-note">🤖 CPU開拓者が自動で領地を広げています。緑の光は持ち主がオンラインで滞在中のマス、⚔️は侵攻中の土地です。</p></div></details>
       </div>
       <section id="houseView" class="house-view hidden" aria-label="拠点の室内">
         <div class="house-caption"><span>🏡 はじまりの家</span><small>横から見た室内。家具を選んで、床の好きな場所に置こう。</small></div>
@@ -63,8 +63,8 @@
     <p class="shop-note">壁紙は購入すると家に反映。家具は家に置くと収入が増えます。装置の効果は所持していれば働きます。</p>
   </section></div></dialog>
 
-  <dialog id="helpDialog"><div class="dialog-inner"><button class="dialog-close" data-close aria-label="閉じる">×</button><p class="eyebrow">FIELD GUIDE</p><h2>冒険の手引き</h2><ul><li>マップで目的地を選ぶと、自動で道を歩いていきます。</li><li>空き地まで歩き、現地で2,240ptを払うと自分の土地になります。</li><li>ほかの人の土地は滞在して占領。以前の自分の土地は短時間で奪還できます。</li><li>何度も攻めると必要時間が延びます。気力は休息や時間で回復します。</li><li>家具は各種類3個まで。置いた家具はショップで何度でも強化できます。</li><li>CPU開拓者も自動で土地を取り合います。奪われた土地は現地で取り返せます。</li><li>領地の限定ショップは2分で閉まります。地図の買い物マークを選んで急ごう。</li></ul><p class="demo-warning">この世界はまだブラウザー内だけのデモです。別の端末とは領地やポイントを共有しません。</p><button class="primary-button" data-close>冒険へ戻る</button></div></dialog>
+  <dialog id="helpDialog"><div class="dialog-inner"><button class="dialog-close" data-close aria-label="閉じる">×</button><p class="eyebrow">FIELD GUIDE</p><h2>冒険の手引き</h2><ul><li>マップで目的地を選ぶと、自動で道を歩いていきます。</li><li>空き地まで歩き、現地で3,360ptを払うと自分の土地になります。</li><li>ほかの人の土地は滞在して占領。以前の自分の土地は短時間で奪還できます。</li><li>何度も攻めると必要時間が延びます。気力は休息や時間で回復します。</li><li>家具は各種類3個まで。置いた家具はショップで何度でも強化できます。</li><li>操作中の収入は以前の約半分です。2分操作がない時や離席中はポイントが少しずつ減ります。</li><li>CPU開拓者も自動で土地を取り合います。奪われた土地は現地で取り返せます。</li><li>領地の限定ショップは2分で閉まります。地図の買い物マークを選んで急ごう。</li></ul><p class="demo-warning">この世界はまだブラウザー内だけのデモです。別の端末とは領地やポイントを共有しません。</p><button class="primary-button" data-close>冒険へ戻る</button></div></dialog>
   <dialog id="nameDialog"><form method="dialog" class="dialog-inner"><p class="eyebrow">ADVENTURER REGISTRATION</p><h2>冒険者ギルドへようこそ</h2><p class="tile-description">この世界で使う名前を決めてください。</p><input id="nameInput" maxlength="12" placeholder="冒険者の名前" autocomplete="nickname" required><button class="primary-button" value="save">冒険を始める</button></form></dialog>
-  <script src="game.js?v=13"></script>
+  <script src="game.js?v=14"></script>
 </body>
 </html>
