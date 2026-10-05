@@ -1,4 +1,5 @@
 (() => {
+  const strayText=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT);while(strayText.nextNode()){if(strayText.currentNode.nodeValue.trim()==='\\n')strayText.currentNode.remove()}
   const W=13,H=11,ROOM_W=20,ROOM_H=1,COMPUTER_LAND_CAP=8,BOT_POINT_INCOME_MULTIPLIER=1,KEY='komorebi-territory-demo-v1',WORLD_START=Date.now(),STEP_MS=1250;
   const items=[
     {id:'flower',name:'野の花の花壇',icon:'🌼',cost:30,bonus:8,desc:'家の収入が少し増える',group:'はじまりの道具'},
