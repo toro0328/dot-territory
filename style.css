@@ -240,3 +240,5 @@
 .legend-raid-mark,.legend-shop-mark{display:inline-grid;place-items:center;width:14px;height:14px;padding:0;background:none;border:0;border-radius:0}.legend-raid-mark::after,.legend-shop-mark::after{content:none}.legend-raid-mark svg,.legend-shop-mark svg{width:14px;height:14px;display:block}
 /* Emoji labels are back on ordinary tiles; only the raid marker keeps its emblem. */
 .cell-icon{line-height:1}
+.cell.other.lost{background:#c17c93!important;border-color:#f0b6c7!important;box-shadow:inset 0 -4px #92566e!important}
+.legend-swatch.lost{background:#c17c93;border-color:#f0b6c7}
