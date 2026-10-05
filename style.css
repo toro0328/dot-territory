@@ -199,3 +199,5 @@
 .occupation-estimate{font-size:8px;line-height:1.4;color:#91a18d;opacity:.78;margin:2px 0 6px}.occupation-estimate.hidden{display:none}
 
 .occ-duration{font-size:8px;font-weight:400;color:#a4ad91;opacity:.82;margin-left:auto;white-space:nowrap}.occ-head{gap:8px}
+
+.occ-formula{display:block;font-size:8px;line-height:1.45;color:#9ba590;opacity:.8;margin:3px 0 5px}
