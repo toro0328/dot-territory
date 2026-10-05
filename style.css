@@ -87,3 +87,34 @@
 .house-floor::after{left:6px;right:6px;bottom:7px;height:28px}
 .inventory-box{width:100%;min-width:0}
 @media(max-width:600px){.layout{grid-template-columns:minmax(0,1fr);padding:0 9px 15px;margin:10px auto;gap:10px}.world-panel{padding:12px}.topbar{height:58px;padding:0 10px}.brand{gap:6px}.brand small{font-size:8px}.brand-mark{width:32px;height:32px}.demo-pill{display:none}.shop-jump{padding:7px;font-size:9px}.map-wrap{padding:4px}.map{min-width:420px}.world-heading h1{font-size:16px}.house-floor{height:clamp(205px,64vw,260px);padding-top:clamp(75px,24vw,102px);padding-bottom:32px}.house-floor::after{height:24px}.house-legend{gap:8px;flex-wrap:wrap;font-size:8px}.inventory-item{font-size:8px;padding:5px}.travel-row{font-size:9px}}
+
+/* Phone-first compact field view: fit the full map and fold secondary guidance. */
+@media(max-width:600px){
+  .topbar{height:48px;padding:0 8px}
+  .brand{gap:5px}.brand-mark{width:29px;height:29px;font-size:17px;border-width:2px}
+  .brand strong{font-size:11px}.brand small{font-size:7px;margin-top:0}
+  .top-actions{gap:5px}.top-actions .shop-jump{padding:5px 7px;font-size:8px}.icon-btn{width:29px;height:29px}
+  .layout{margin:5px auto;padding:0 6px 10px;gap:7px}
+  .world-panel{padding:8px}.world-heading{gap:5px}.world-heading h1{font-size:14px}
+  .world-heading .eyebrow{font-size:7px;margin-bottom:2px}.world-heading .small-button{padding:5px 7px;font-size:8px}
+  .world-stats{gap:4px 10px;margin:6px 0 8px;font-size:8px}
+  .map-wrap{width:100%;padding:3px;border-width:2px;overflow:hidden}
+  .map{width:100%;min-width:0;grid-template-columns:repeat(13,minmax(0,1fr));grid-template-rows:repeat(11,clamp(22px,6.2vw,27px));gap:1px;padding:2px}
+  .cell{min-width:0;border-width:1px;font-size:clamp(9px,2.8vw,12px);box-shadow:inset 0 -2px #536f42}
+  .cell::after{inset:2px auto auto 2px;width:2px;height:2px;box-shadow:5px 4px #ccd28c,10px 2px #607e49}
+  .cell.player::before{font-size:clamp(11px,3.5vw,15px)}.cell.home::after{font-size:12px}
+  .land-mark{right:0;font-size:7px}.limited-shop-mark{font-size:10px}
+  .map-details{margin-top:3px}.map-details summary{padding:4px 2px;color:#c5c9a6;font-size:8px;cursor:pointer;list-style:none}
+  .map-details summary::-webkit-details-marker{display:none}.map-details summary::after{content:'＋';float:right;color:#e4ca7a}.map-details[open] summary::after{content:'−'}
+  .map-details-content{padding:2px 4px 4px}.map-legend{gap:7px;padding:3px 1px;font-size:8px}.legend-swatch{width:9px;height:9px}
+  .map-details .shop-note{margin:2px 0;font-size:8px}
+  .mobile-target{margin:6px 0 0;padding:7px 8px;scroll-margin-top:50px}
+  .mobile-target>summary{cursor:pointer;list-style:none}.mobile-target>summary::-webkit-details-marker{display:none}
+  .mobile-target>summary::after{content:'＋';color:#e4ca7a;font-size:12px}.mobile-target[open]>summary::after{content:'−'}
+  .mobile-target .eyebrow{font-size:7px;margin-bottom:1px}.mobile-target .section-title h2{font-size:11px}.mobile-target .tile-badge{padding:3px 6px;font-size:8px}
+  .mobile-target .tile-description{margin:4px 0;font-size:9px;line-height:1.45}.mobile-target .tile-actions{gap:4px}.mobile-target .tile-actions button{padding:5px 6px;font-size:8px}
+  .mobile-target .occupation{margin:5px 0;padding:6px}.mobile-target .limited-shop-panel{padding:6px;margin-top:6px}
+  .travel-panel{margin-top:5px;padding-top:6px}.travel-row{font-size:8px}.travel-track{height:6px;margin-top:4px}
+  .travel-help{margin-top:2px}.travel-help .hint{margin:2px 0;font-size:8px}
+  .side-column{gap:7px}.profile-panel,.shop-panel,.log-panel{padding:8px}
+}
