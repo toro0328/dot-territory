@@ -208,3 +208,29 @@
 
 .raid-heading{display:inline-flex;align-items:center;gap:7px}.raid-emblem{width:23px;height:23px;image-rendering:pixelated;flex:none}.raid-panel.is-active{border-color:#d17b66;box-shadow:0 0 0 1px #d17b6644,inset 0 0 0 2px #30483c}.raid-panel.is-active>summary{color:#ffc18d}.raid-panel.is-cleared .raid-emblem{filter:hue-rotate(75deg);opacity:.8}.raid-join{background:linear-gradient(#efbd70,#ca8751);border-color:#f2ca85}
 .land-mark{bottom:1px;z-index:4;line-height:1}.opponent-mark{left:1px;right:auto;min-width:13px;padding:1px 2px;background:#342a32;border:1px solid #e69a82;color:#ffd6c7;font:600 5px/1.15 'DotGothic16',sans-serif;text-align:center;border-radius:2px}.defense-mark,.npc-defense-mark{right:1px;left:auto;width:13px;height:15px;color:#6ed8f3;display:flex;align-items:center;justify-content:center;filter:drop-shadow(0 1px 1px #18211f)}.defense-mark svg,.npc-defense-mark svg{width:12px;height:14px;position:absolute}.defense-mark b,.npc-defense-mark b{position:relative;font:700 6px/1 sans-serif;color:#102b32;background:#d4f7ff;border-radius:5px;min-width:8px;text-align:center;padding:1px}.npc-defense-mark{color:#d899ff}.npc-defense-mark b{color:#322039;background:#f3d7ff}.plot-mark{left:auto;right:2px;color:#fff0bd}.attack-mark{top:1px;bottom:auto;left:1px;right:auto;width:12px;height:12px;border-radius:50%;background:#fb765d;color:#361c1a;font:900 8px/12px sans-serif;text-align:center}.legend-owner-chip,.legend-defense-chip,.legend-attack-chip{display:inline-flex;align-items:center;justify-content:center;font:700 6px/1 sans-serif;padding:2px;border-radius:2px}.legend-owner-chip{color:#ffd6c7;background:#342a32;border:1px solid #e69a82}.legend-defense-chip{width:12px;height:12px;color:#102b32;background:#6ed8f3;border:1px solid #d4f7ff;clip-path:polygon(50% 0,100% 20%,90% 68%,50% 100%,10% 68%,0 20%)}.legend-attack-chip{width:12px;height:12px;color:#361c1a;background:#fb765d;border-radius:50%}
+
+/* Original pixel map marks and raid-site marker */
+.map-mark-svg{display:block;width:18px;height:18px;shape-rendering:crispEdges;filter:drop-shadow(0 1px 1px #17231d)}
+.cell-icon{display:grid;place-items:center;line-height:0}
+.cell.player::before{content:none;animation:none}
+.cell.player .cell-icon{opacity:1;z-index:3;transform:translateY(-2px)}
+.cell.home::after{content:none}
+.online-presence-mark{position:absolute;z-index:5;top:1px;right:1px;width:10px;height:10px;line-height:0}
+.online-presence-mark .map-mark-svg{width:10px;height:10px}
+.raid-site{border-color:#f2c66d!important;box-shadow:inset 0 0 0 2px #6e4a86,0 0 8px #dbb45e!important;animation:raidPulse 1.4s infinite alternate}
+.raid-site-marker{position:absolute;z-index:5;top:0;left:0;width:17px;height:17px;padding:1px;background:#49345b;border:1px solid #f2c66d;border-radius:3px;line-height:0}
+.raid-site-marker .map-mark-svg{width:14px;height:14px}
+@keyframes raidPulse{from{filter:brightness(.92)}to{filter:brightness(1.3)}}
+.limited-shop-mark{position:absolute;z-index:5;top:0;right:0;width:16px;height:16px;padding:1px;display:grid;place-items:center;background:#263c32;border:1px solid #f4dc89;border-radius:2px;line-height:0}
+.limited-shop-mark .map-mark-svg{width:13px;height:13px}
+.attack-mark{width:14px;height:14px;display:grid;place-items:center;background:none;border-radius:0;line-height:0}
+.attack-mark .map-mark-svg{width:13px;height:13px}
+.plot-mark{width:12px;height:12px;display:block;line-height:0}
+.plot-mark .map-mark-svg{width:11px;height:11px}
+.legend-raid-mark,.legend-shop-mark{display:inline-block;width:12px;height:12px;border:1px solid #f2c66d;border-radius:3px;background:#49345b;position:relative}
+.legend-raid-mark::after{content:'✦';position:absolute;inset:0;color:#ffdc7b;font:8px/10px sans-serif;text-align:center}
+.legend-shop-mark{border-color:#f4dc89;background:#526942;border-radius:1px}
+.legend-shop-mark::after{content:'⌑';position:absolute;inset:0;color:#ffe08a;font:10px/10px sans-serif;text-align:center}
+.raid-location{font-size:8px;color:#f2d987;margin:6px 0 3px}
+.raid-go{margin:0 4px 0 0;padding:5px 9px;font-size:8px}
+@media(max-width:600px){.map-mark-svg{width:15px;height:15px}.raid-site-marker{width:15px;height:15px}.raid-site-marker .map-mark-svg{width:12px;height:12px}.limited-shop-mark{width:14px;height:14px}.limited-shop-mark .map-mark-svg{width:11px;height:11px}}
