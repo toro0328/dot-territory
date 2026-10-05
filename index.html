@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#172b2b">
   <title>こもれび開拓団 — 冒険と陣地のRPG試作</title>
-  <link rel="stylesheet" href="style.css?v=10">
+  <link rel="stylesheet" href="style.css?v=11">
 </head>
 <body>
   <header class="topbar">
@@ -16,7 +16,12 @@
   <main class="layout" id="world">
     <section class="world-panel panel">
       <div class="world-heading"><div><p class="eyebrow">ADVENTURE LOG · ひだまり地方</p><h1>ひだまりの原っぱ</h1></div><button id="homeBtn" class="small-button">🏠 家に入る</button></div>
-      <div class="world-stats"><span>🧭 <b id="playerCount">4</b>/100</span><span>領地 <b id="tileCount">—</b>マス</span><span>✦ <b id="points">80</b>pt</span><span>🕒 <b id="clock">--:--</b></span></div>
+      <div class="world-stats"><span>🧭 <b id="playerCount">4</b>/100</span><span>領地 <b id="tileCount">—</b>マス</span><span>🕒 <b id="clock">--:--</b></span></div>
+      <div class="resource-hud" aria-label="冒険者の状態">
+        <div class="resource-card points-card"><span>✦ 所持ポイント</span><div><strong id="points">80</strong><small>pt</small></div></div>
+        <div class="resource-card morale-card"><div class="morale-label"><span>⚡ 気力</span><strong id="moraleValue">3 / 3</strong></div><div class="bar"><i id="moraleBar"></i></div></div>
+      </div>
+      <div id="worldAlert" class="world-alert hidden" role="status" aria-live="assertive"><span>速報</span><strong id="worldAlertText"></strong></div>
       <div id="worldMapView">
         <div class="map-wrap"><div id="map" class="map" role="grid" aria-label="ひだまりの原っぱマップ"></div></div>
         <details class="map-details"><summary>マップの見方・CPU開拓者</summary><div class="map-details-content"><div class="map-legend"><span><i class="legend-swatch yours"></i>あなた</span><span><i class="legend-swatch other"></i>CPU開拓者</span><span><i class="legend-swatch wild"></i>無人地</span><span><i class="legend-swatch path"></i>草地</span></div><p class="shop-note">🤖 CPU開拓者が自動で領地を広げています。⚔️の表示がある土地は侵攻中です。</p></div></details>
@@ -43,10 +48,10 @@
     <aside class="side-column">
       <details class="panel profile-panel compact-profile">
         <summary class="profile-summary"><div class="profile-head"><div class="avatar">🧙</div><div><p class="eyebrow">冒険者ギルド</p><h2 id="playerName">開拓者</h2></div></div><span class="fold-hint">詳細を開く ＋</span></summary>
-        <div class="profile-more"><button id="renameBtn" class="text-button">名前変更</button><div class="income-row"><span>領地の収入</span><b id="income">0 pt / 分</b></div><div class="income-row"><span>家の装飾ボーナス</span><b id="bonus">+0%</b></div><div class="morale"><div><span>気力</span><b id="moraleValue">3 / 3</b></div><div class="bar"><i id="moraleBar"></i></div><small>同じ土地への連続攻撃で消耗。休息や時間経過で戻ります。</small></div></div>
+        <div class="profile-more"><button id="renameBtn" class="text-button">名前変更</button><div class="income-row"><span>領地の収入</span><b id="income">0 pt / 分</b></div><div class="income-row"><span>家の装飾ボーナス</span><b id="bonus">+0%</b></div><p class="profile-note">連続攻撃で気力を消耗。時間経過で回復します。</p></div>
       </details>
 
-      <details class="panel log-panel compact-log"><summary class="section-title"><h2>冒険の記録</h2><span>開く</span></summary><div class="log-content"><button id="resetBtn" class="text-button">デモをリセット</button><ul id="eventLog" class="event-log"></ul></div></details>
+      <details class="panel log-panel compact-log"><summary class="section-title"><h2>冒険ログ</h2><span id="latestLog" class="log-preview">記録を見る</span></summary><div class="log-content"><button id="resetBtn" class="text-button">デモをリセット</button><ul id="eventLog" class="event-log"></ul></div></details>
     </aside>
   </main>
   <footer>現在の試作データはこのブラウザーに保存されます。プレイヤー同士で同じ世界を共有する機能は、オンライン保存先を追加する段階です。</footer>
@@ -60,6 +65,6 @@
 
   <dialog id="helpDialog"><div class="dialog-inner"><button class="dialog-close" data-close aria-label="閉じる">×</button><p class="eyebrow">FIELD GUIDE</p><h2>冒険の手引き</h2><ul><li>マップで目的地を選ぶと、自動で道を歩いていきます。</li><li>空き地まで歩き、現地で70ptを払うと自分の土地になります。</li><li>ほかの人の土地は滞在して占領。以前の自分の土地は短時間で奪還できます。</li><li>何度も攻めると必要時間が延びます。気力は休息や時間で回復します。</li><li>家具は各種類3個まで。置いた家具はショップで何度でも強化できます。</li><li>CPU開拓者も自動で土地を取り合います。奪われた土地は現地で取り返せます。</li><li>領地の限定ショップは2分で閉まります。地図の買い物マークを選んで急ごう。</li></ul><p class="demo-warning">この世界はまだブラウザー内だけのデモです。別の端末とは領地やポイントを共有しません。</p><button class="primary-button" data-close>冒険へ戻る</button></div></dialog>
   <dialog id="nameDialog"><form method="dialog" class="dialog-inner"><p class="eyebrow">ADVENTURER REGISTRATION</p><h2>冒険者ギルドへようこそ</h2><p class="tile-description">この世界で使う名前を決めてください。</p><input id="nameInput" maxlength="12" placeholder="冒険者の名前" autocomplete="nickname" required><button class="primary-button" value="save">冒険を始める</button></form></dialog>
-  <script src="game.js?v=10"></script>
+  <script src="game.js?v=11"></script>
 </body>
 </html>
