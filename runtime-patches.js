@@ -6,34 +6,8 @@
   }
 
   const RAID_JOIN_CHANCE = { pioneer:.30, balanced:.55, challenger:.72, wanderer:.38, duelist:.42 };
-  const MAP_W = 13;
   const toXY = key => String(key).split(',').map(Number);
   const toKey = (x,y) => `${x},${y}`;
-
-  function territoryShapeBonuses(state) {
-    const owned = new Set(state.lands || []), lineDefense = new Set(), surrounded = new Set();
-    // 5マス以上の縦・横一直線を探し、その列に属する全土地へ自動防御+1。
-    for (const k of owned) {
-      const [x,y] = toXY(k);
-      for (const [dx,dy] of [[1,0],[0,1]]) {
-        const prev = toKey(x-dx,y-dy);
-        if (owned.has(prev)) continue;
-        const run=[];
-        for(let cx=x,cy=y; owned.has(toKey(cx,cy)); cx+=dx,cy+=dy) run.push(toKey(cx,cy));
-        if(run.length>=5) run.forEach(cell=>lineDefense.add(cell));
-      }
-      const neighbors=[[x+1,y],[x-1,y],[x,y+1],[x,y-1]].map(([a,b])=>toKey(a,b));
-      if(neighbors.filter(n=>owned.has(n)).length>=3) surrounded.add(k);
-    }
-    state.territoryShapeBonuses = {
-      lineDefense:[...lineDefense],
-      surrounded:[...surrounded],
-      largestConnected:largestConnectedTerritory(owned),
-      updatedAt:Date.now()
-    };
-    // 既存の防御レベルとは別枠の自動防御。game.js側からも参照できるよう公開。
-    window.__komorebiTerritoryShapeBonuses = state.territoryShapeBonuses;
-  }
 
   function largestConnectedTerritory(owned){
     const seen=new Set(); let best=0;
@@ -46,14 +20,58 @@
     return best;
   }
 
-  // game.jsから使える形ボーナスAPI。
-  window.KomorebiTerritoryShapes = {
-    defenseBonus(key){ return window.__komorebiTerritoryShapeBonuses?.lineDefense?.includes(key) ? 1 : 0; },
-    surroundedBonus(key){ return window.__komorebiTerritoryShapeBonuses?.surrounded?.includes(key) ? .20 : 0; },
-    incomeMultiplier(){
-      const n=Number(window.__komorebiTerritoryShapeBonuses?.largestConnected)||0;
-      return n>=8?1.15:n>=5?1.10:n>=3?1.06:n>=2?1.03:1;
+  function territoryShapeBonuses(state) {
+    const owned = new Set(state.lands || []), lineDefense = new Set(), encircledEnemies = new Set();
+    // 5マス以上の縦・横一直線：その列の各土地へ自動防御+1。
+    for (const k of owned) {
+      const [x,y] = toXY(k);
+      for (const [dx,dy] of [[1,0],[0,1]]) {
+        if (owned.has(toKey(x-dx,y-dy))) continue;
+        const run=[];
+        for(let cx=x,cy=y; owned.has(toKey(cx,cy)); cx+=dx,cy+=dy) run.push(toKey(cx,cy));
+        if(run.length>=5) run.forEach(cell=>lineDefense.add(cell));
+      }
     }
+    // 敵地の周囲8マスを「口」の字で完全に囲むと包囲成立。
+    for(const bot of state.computers||[])for(const k of bot.lands||[]){
+      const[x,y]=toXY(k),ring=[];
+      for(let dy=-1;dy<=1;dy++)for(let dx=-1;dx<=1;dx++)if(dx||dy)ring.push(toKey(x+dx,y+dy));
+      if(ring.every(n=>owned.has(n)))encircledEnemies.add(k);
+    }
+    state.territoryShapeBonuses={lineDefense:[...lineDefense],encircledEnemies:[...encircledEnemies],largestConnected:largestConnectedTerritory(owned),updatedAt:Date.now()};
+    window.__komorebiTerritoryShapeBonuses=state.territoryShapeBonuses;
+    applyAutomaticLineDefense(state,lineDefense);
+    applyEncirclementToOccupation(state,encircledEnemies);
+  }
+
+  function applyAutomaticLineDefense(state,lineDefense){
+    state.landGear=state.landGear||{};
+    const all=new Set([...Object.keys(state.landGear),...(state.lands||[])]);
+    for(const k of all){
+      const gear=state.landGear[k]=state.landGear[k]||{};
+      const entry=gear.watchtower=gear.watchtower||{count:0,level:0};
+      const oldAuto=Math.max(0,Number(entry.__shapeAuto)||0);
+      const playerCount=Math.max(0,(Number(entry.count)||0)-oldAuto);
+      const auto=lineDefense.has(k)?1:0;
+      entry.count=playerCount+auto;
+      entry.__shapeAuto=auto;
+      if(!entry.count&&!entry.level){delete gear.watchtower;if(!Object.keys(gear).length)delete state.landGear[k]}
+    }
+  }
+
+  function applyEncirclementToOccupation(state,encircledEnemies){
+    const occ=state.occupy;if(!occ||occ.type!=='raid'||!encircledEnemies.has(occ.key)||occ.__encirclementApplied)return;
+    const before=Math.max(1,Number(occ.required)||20),after=Math.max(12,Math.ceil(before*.55));
+    occ.required=after;occ.__encirclementApplied=true;occ.encirclementMultiplier=.55;occ.encirclementOriginalRequired=before;
+    state.log=Array.isArray(state.log)?state.log:[];
+    state.log.unshift(`包囲効果！敵地をぐるっと囲んだため、占領時間が${before}秒→${after}秒に短縮された。`);
+    state.log=state.log.slice(0,6);
+  }
+
+  window.KomorebiTerritoryShapes={
+    defenseBonus(key){return window.__komorebiTerritoryShapeBonuses?.lineDefense?.includes(key)?1:0},
+    isEncircled(key){return window.__komorebiTerritoryShapeBonuses?.encircledEnemies?.includes(key)||false},
+    incomeMultiplier(){const n=Number(window.__komorebiTerritoryShapeBonuses?.largestConnected)||0;return n>=8?1.15:n>=5?1.10:n>=3?1.06:n>=2?1.03:1}
   };
 
   function chooseRaidParticipants(state, now) {
