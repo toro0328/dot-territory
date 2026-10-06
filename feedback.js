@@ -1,140 +1,20 @@
 (() => {
   const GAME_KEY = 'komorebi-territory-demo-v1';
+  function gameState(){try{return JSON.parse(localStorage.getItem(GAME_KEY)||'{}')}catch{return{}}}
+  function makeStyles(){const style=document.createElement('style');style.textContent=`
+    .feedback-jump,.territory-guide-jump{white-space:nowrap}
+    #feedbackDialog .dialog-inner,#territoryGuideDialog .dialog-inner{width:min(92vw,520px);max-height:min(82vh,680px);overflow:auto}
+    #feedbackDialog .dialog-close,#territoryGuideDialog .dialog-close{appearance:none;-webkit-appearance:none;width:28px;height:28px;padding:0;display:grid;place-items:center;background:linear-gradient(#3b5649,#2a4037);border:1px solid #71815c;border-radius:4px;color:#f1d783;font:700 17px/1 'DotGothic16',sans-serif;box-shadow:inset 0 -2px #1d2f29,0 1px 3px #0e1715;cursor:pointer}
+    .feedback-form{display:grid;gap:9px;margin-top:10px}.feedback-form label{display:grid;gap:5px;font-size:9px;color:#d8ddbf}.feedback-form select,.feedback-form textarea{width:100%;box-sizing:border-box;background:#172a26;border:1px solid #60765f;color:#f0e7c2;border-radius:4px;padding:8px;font:10px/1.5 'DotGothic16',sans-serif}.feedback-form textarea{min-height:140px;resize:vertical}.feedback-form small{color:#9eab98;line-height:1.5}.feedback-status{min-height:18px;margin:2px 0 0;font-size:9px;line-height:1.5;color:#e7d78d}.feedback-status.error{color:#f0a59c}.feedback-reward{padding:7px 8px;background:#1f352d;border-left:3px solid #ddbf58;color:#e9dfad;font-size:9px;line-height:1.5}
+    .territory-rule-list{display:grid;gap:8px;margin:12px 0}.territory-rule{padding:9px;background:#1c322c;border:1px solid #526d58}.territory-rule strong{display:block;color:#f0d987;font:10px 'DotGothic16',sans-serif}.territory-rule p{margin:4px 0 0;color:#c4ceb6;font-size:9px;line-height:1.55}.territory-rule em{font-style:normal;color:#8fe0bd}.territory-current{padding:8px;background:#142824;border-left:3px solid #78b98a;color:#dbe6c8;font-size:9px;line-height:1.6}
+    @media(max-width:600px){.feedback-jump,.territory-guide-jump{font-size:7px;padding:4px 6px}#feedbackDialog .dialog-inner,#territoryGuideDialog .dialog-inner{width:94vw;padding:16px}.feedback-form textarea{min-height:120px}}
+  `;document.head.appendChild(style)}
 
-  function gameState() {
-    try { return JSON.parse(localStorage.getItem(GAME_KEY) || '{}'); }
-    catch { return {}; }
-  }
+  function buildTerritoryGuide(){const top=document.querySelector('.top-actions');if(!top||document.getElementById('territoryGuideBtn'))return;const button=document.createElement('button');button.id='territoryGuideBtn';button.type='button';button.className='small-button territory-guide-jump';button.textContent='🧩 領地効果';top.appendChild(button);const dialog=document.createElement('dialog');dialog.id='territoryGuideDialog';dialog.innerHTML=`<div class="dialog-inner"><button class="dialog-close" type="button" aria-label="閉じる">×</button><p class="eyebrow">TERRITORY EFFECTS</p><h2>土地の取り方・形の効果</h2><p class="tile-description">土地は数だけでなく、並べ方でも有利になります。</p><div id="territoryCurrent" class="territory-current"></div><div class="territory-rule-list"><div class="territory-rule"><strong>━━ 直線防衛 · 5マス以上</strong><p>自分の土地を縦または横に<em>5マス以上まっすぐ連結</em>すると、その直線上の土地すべてに<em>自動防御 +1</em>。装備で置いた防御とは別に加算されます。</p></div><div class="territory-rule"><strong>▣ 完全包囲 · 口の字</strong><p>敵の1マスを中心に、その<em>周囲8マスを全部自分の土地</em>にすると「包囲」成立。その敵地の<em>占領時間が45%短縮（通常の55%）</em>されます。最低12秒。</p></div><div class="territory-rule"><strong>⚔ 敵地の占領</strong><p>敵地へ到着すると占領開始。持ち主が現地にいると時間が大きく増えます。攻撃装備を強化すると短縮できます。</p></div><div class="territory-rule"><strong>↩ 奪還</strong><p>以前自分が持っていた土地は通常の敵地より短時間で取り返せます。占領・奪還中に<em>気力が0になると失敗</em>します。</p></div><div class="territory-rule"><strong>⚡ 土地獲得</strong><p>土地の占領・奪還に成功すると<em>気力 +5</em>。空き地は現地でポイントを払って購入します。</p></div><div class="territory-rule"><strong>🏠 はじまりの家</strong><p>最初の拠点は特別な土地で、NPCや他の勢力に奪われません。</p></div></div><button class="primary-button" type="button" data-territory-close>閉じる</button></div>`;document.body.appendChild(dialog);const refresh=()=>{const s=gameState(),b=s.territoryShapeBonuses||{},lines=(b.lineDefense||[]).length,enc=(b.encircledEnemies||[]).length;document.getElementById('territoryCurrent').innerHTML=`<strong>現在の形ボーナス</strong><br>直線防衛：${lines?`${lines}マスに発動中`:'未発動'}<br>完全包囲：${enc?`${enc}か所で発動中`:'未発動'}`};button.addEventListener('click',()=>{refresh();dialog.showModal()});dialog.querySelector('.dialog-close').addEventListener('click',()=>dialog.close());dialog.querySelector('[data-territory-close]').addEventListener('click',()=>dialog.close());dialog.addEventListener('click',e=>{if(e.target===dialog)dialog.close()})}
 
-  function makeStyles() {
-    const style = document.createElement('style');
-    style.textContent = `
-      .feedback-jump{white-space:nowrap}
-      #feedbackDialog .dialog-inner{width:min(92vw,520px);max-height:min(82vh,680px);overflow:auto}
-      #feedbackDialog .dialog-close{appearance:none;-webkit-appearance:none;width:28px;height:28px;padding:0;display:grid;place-items:center;background:linear-gradient(#3b5649,#2a4037);border:1px solid #71815c;border-radius:4px;color:#f1d783;font:700 17px/1 'DotGothic16',sans-serif;box-shadow:inset 0 -2px #1d2f29,0 1px 3px #0e1715;cursor:pointer}
-      .feedback-form{display:grid;gap:9px;margin-top:10px}.feedback-form label{display:grid;gap:5px;font-size:9px;color:#d8ddbf}.feedback-form select,.feedback-form textarea{width:100%;box-sizing:border-box;background:#172a26;border:1px solid #60765f;color:#f0e7c2;border-radius:4px;padding:8px;font:10px/1.5 'DotGothic16',sans-serif}.feedback-form textarea{min-height:140px;resize:vertical}.feedback-form small{color:#9eab98;line-height:1.5}.feedback-status{min-height:18px;margin:2px 0 0;font-size:9px;line-height:1.5;color:#e7d78d}.feedback-status.error{color:#f0a59c}.feedback-reward{padding:7px 8px;background:#1f352d;border-left:3px solid #ddbf58;color:#e9dfad;font-size:9px;line-height:1.5}
-      @media(max-width:600px){.feedback-jump{font-size:7px;padding:4px 6px}#feedbackDialog .dialog-inner{width:94vw;padding:16px}.feedback-form textarea{min-height:120px}}
-    `;
-    document.head.appendChild(style);
-  }
+  function buildUi(){const top=document.querySelector('.top-actions');if(!top||document.getElementById('feedbackBtn')){buildTerritoryGuide();return}const button=document.createElement('button');button.id='feedbackBtn';button.type='button';button.className='small-button feedback-jump';button.textContent='💬 感想・報告';top.appendChild(button);const dialog=document.createElement('dialog');dialog.id='feedbackDialog';dialog.innerHTML=`<div class="dialog-inner"><button class="dialog-close" type="button" aria-label="閉じる">×</button><p class="eyebrow">FEEDBACK / REPORT</p><h2>感想・報告を送る</h2><p class="tile-description">遊んで気づいたこと、不具合、要望などを送れます。保存された内容は公開ページには表示されません。</p><div class="feedback-reward">送信できたら、お礼に <strong>+1,000pt</strong>。ありがとう！</div><form class="feedback-form"><label>種類<select id="feedbackKind"><option value="impression">感想</option><option value="bug">不具合報告</option><option value="request">要望</option><option value="other">その他</option></select></label><label>内容<textarea id="feedbackMessage" maxlength="1200" required placeholder="ここに入力してください"></textarea></label><small>※ 公開ページからは読み返せない、投稿専用の保存先へ送ります。</small><p id="feedbackStatus" class="feedback-status" role="status" aria-live="polite"></p><button id="feedbackSubmit" class="primary-button" type="submit">送信する</button></form></div>`;document.body.appendChild(dialog);button.addEventListener('click',()=>dialog.showModal());dialog.querySelector('.dialog-close').addEventListener('click',()=>dialog.close());dialog.addEventListener('click',e=>{if(e.target===dialog)dialog.close()});dialog.querySelector('form').addEventListener('submit',submitFeedback);buildTerritoryGuide()}
 
-  function buildUi() {
-    const top = document.querySelector('.top-actions');
-    if (!top || document.getElementById('feedbackBtn')) return;
+  async function submitFeedback(event){event.preventDefault();const dialog=document.getElementById('feedbackDialog'),status=document.getElementById('feedbackStatus'),submit=document.getElementById('feedbackSubmit'),message=document.getElementById('feedbackMessage').value.trim(),kind=document.getElementById('feedbackKind').value,cfg=window.KOMOREBI_FEEDBACK_CONFIG||{};status.classList.remove('error');if(!message){status.textContent='内容を入力してね。';status.classList.add('error');return}if(!cfg.supabaseUrl||!cfg.anonKey){status.textContent='非公開データベースの接続準備中です。まだ送信はされていません。';status.classList.add('error');return}const id=(crypto.randomUUID?.()||`feedback-${Date.now()}-${Math.random().toString(36).slice(2)}`),state=gameState(),payload={client_report_id:id,player_name:String(state.name||'匿名の開拓者').slice(0,40),report_type:kind,message:message.slice(0,1200),client_time:new Date().toISOString(),page_path:location.pathname,game_label:'komorebi-frontier-beta'};submit.disabled=true;status.textContent='送信中…';try{const base=String(cfg.supabaseUrl).replace(/\/$/,''),table=encodeURIComponent(cfg.table||'feedback_reports'),headers={apikey:cfg.anonKey,'Content-Type':'application/json',Prefer:'return=minimal'};if(String(cfg.anonKey).startsWith('eyJ'))headers.Authorization=`Bearer ${cfg.anonKey}`;const response=await fetch(`${base}/rest/v1/${table}`,{method:'POST',headers,body:JSON.stringify(payload)});if(!response.ok)throw new Error(`HTTP ${response.status}`);if(window.KomorebiRuntimePatch?.rewardFeedback)window.KomorebiRuntimePatch.rewardFeedback(id,1000);else window.__komorebiFeedbackReward={id:`feedback:${id}`,amount:1000};document.dispatchEvent(new Event('pointerdown'));document.getElementById('feedbackMessage').value='';status.textContent='送ってくれてありがとう！ +1,000ptをプレゼントしました。';setTimeout(()=>{if(dialog.open)dialog.close()},1800)}catch(error){console.error(error);status.textContent='送信に失敗しました。ポイントは増えていません。通信状態を確認してもう一度試してね。';status.classList.add('error')}finally{submit.disabled=false}}
 
-    const button = document.createElement('button');
-    button.id = 'feedbackBtn';
-    button.type = 'button';
-    button.className = 'small-button feedback-jump';
-    button.textContent = '💬 感想・報告';
-    top.appendChild(button);
-
-    const dialog = document.createElement('dialog');
-    dialog.id = 'feedbackDialog';
-    dialog.innerHTML = `
-      <div class="dialog-inner">
-        <button class="dialog-close" type="button" aria-label="閉じる">×</button>
-        <p class="eyebrow">FEEDBACK / REPORT</p>
-        <h2>感想・報告を送る</h2>
-        <p class="tile-description">遊んで気づいたこと、不具合、要望などを送れます。保存された内容は公開ページには表示されません。</p>
-        <div class="feedback-reward">送信できたら、お礼に <strong>+1,000pt</strong>。ありがとう！</div>
-        <form class="feedback-form">
-          <label>種類
-            <select id="feedbackKind">
-              <option value="impression">感想</option>
-              <option value="bug">不具合報告</option>
-              <option value="request">要望</option>
-              <option value="other">その他</option>
-            </select>
-          </label>
-          <label>内容
-            <textarea id="feedbackMessage" maxlength="1200" required placeholder="ここに入力してください"></textarea>
-          </label>
-          <small>※ 公開ページからは読み返せない、投稿専用の保存先へ送ります。</small>
-          <p id="feedbackStatus" class="feedback-status" role="status" aria-live="polite"></p>
-          <button id="feedbackSubmit" class="primary-button" type="submit">送信する</button>
-        </form>
-      </div>`;
-    document.body.appendChild(dialog);
-
-    button.addEventListener('click', () => dialog.showModal());
-    dialog.querySelector('.dialog-close').addEventListener('click', () => dialog.close());
-    dialog.addEventListener('click', e => { if (e.target === dialog) dialog.close(); });
-    dialog.querySelector('form').addEventListener('submit', submitFeedback);
-  }
-
-  async function submitFeedback(event) {
-    event.preventDefault();
-    const dialog = document.getElementById('feedbackDialog');
-    const status = document.getElementById('feedbackStatus');
-    const submit = document.getElementById('feedbackSubmit');
-    const message = document.getElementById('feedbackMessage').value.trim();
-    const kind = document.getElementById('feedbackKind').value;
-    const cfg = window.KOMOREBI_FEEDBACK_CONFIG || {};
-
-    status.classList.remove('error');
-    if (!message) {
-      status.textContent = '内容を入力してね。';
-      status.classList.add('error');
-      return;
-    }
-    if (!cfg.supabaseUrl || !cfg.anonKey) {
-      status.textContent = '非公開データベースの接続準備中です。まだ送信はされていません。';
-      status.classList.add('error');
-      return;
-    }
-
-    const id = (crypto.randomUUID?.() || `feedback-${Date.now()}-${Math.random().toString(36).slice(2)}`);
-    const state = gameState();
-    const payload = {
-      client_report_id: id,
-      player_name: String(state.name || '匿名の開拓者').slice(0, 40),
-      report_type: kind,
-      message: message.slice(0, 1200),
-      client_time: new Date().toISOString(),
-      page_path: location.pathname,
-      game_label: 'komorebi-frontier-beta'
-    };
-
-    submit.disabled = true;
-    status.textContent = '送信中…';
-    try {
-      const base = String(cfg.supabaseUrl).replace(/\/$/, '');
-      const table = encodeURIComponent(cfg.table || 'feedback_reports');
-      const headers = {
-        apikey: cfg.anonKey,
-        'Content-Type': 'application/json',
-        Prefer: 'return=minimal'
-      };
-      // 旧anon JWTを使う場合だけAuthorizationを付ける。新publishable keyでは不要。
-      if (String(cfg.anonKey).startsWith('eyJ')) headers.Authorization = `Bearer ${cfg.anonKey}`;
-
-      const response = await fetch(`${base}/rest/v1/${table}`, {
-        method: 'POST',
-        headers,
-        body: JSON.stringify(payload)
-      });
-      if (!response.ok) throw new Error(`HTTP ${response.status}`);
-
-      if (window.KomorebiRuntimePatch?.rewardFeedback) {
-        window.KomorebiRuntimePatch.rewardFeedback(id, 1000);
-      } else {
-        window.__komorebiFeedbackReward = { id: `feedback:${id}`, amount: 1000 };
-      }
-      document.dispatchEvent(new Event('pointerdown'));
-      document.getElementById('feedbackMessage').value = '';
-      status.textContent = '送ってくれてありがとう！ +1,000ptをプレゼントしました。';
-      setTimeout(() => { if (dialog.open) dialog.close(); }, 1800);
-    } catch (error) {
-      console.error(error);
-      status.textContent = '送信に失敗しました。ポイントは増えていません。通信状態を確認してもう一度試してね。';
-      status.classList.add('error');
-    } finally {
-      submit.disabled = false;
-    }
-  }
-
-  makeStyles();
-  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', buildUi);
-  else buildUi();
+  makeStyles();if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',buildUi);else buildUi();
 })();
