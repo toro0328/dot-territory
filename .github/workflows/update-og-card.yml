@@ -19,10 +19,9 @@ jobs:
         with:
           ref: main
 
-      - name: Update Open Graph image
+      - name: Refresh Open Graph image cache key
         run: |
-          sed -i 's#share-card\.png?v=1#share-card-ja.jpg?v=2#g' index.html
-          sed -i 's#KOMOREBI FRONTIER — A Pixel Territory RPG#こもれび開拓団 — ピクセル領地RPG#g' index.html
+          sed -i 's#share-card-ja\.jpg?v=2#share-card-ja.jpg?v=3#g' index.html
 
       - name: Commit changes
         run: |
@@ -33,5 +32,5 @@ jobs:
             echo "No changes needed"
             exit 0
           fi
-          git commit -m "Use Japanese social preview card"
+          git commit -m "Refresh Japanese social preview card"
           git push origin main
