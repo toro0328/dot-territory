@@ -1,0 +1,38 @@
+name: Build distributable game ZIP
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'index.html'
+      - 'game.js'
+      - 'style.css'
+      - 'runtime-patches.js'
+      - 'feedback-config.js'
+      - 'feedback.js'
+      - 'share-card.png'
+      - '.github/workflows/package-game.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  package:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Prepare package
+        run: |
+          mkdir -p dist
+          cp index.html game.js style.css runtime-patches.js feedback-config.js feedback.js share-card.png dist/
+
+      - name: Upload game package
+        uses: actions/upload-artifact@v4
+        with:
+          name: komorebi-frontier-beta
+          path: dist/*
+          if-no-files-found: error
+          retention-days: 30
