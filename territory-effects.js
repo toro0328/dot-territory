@@ -1,0 +1,19 @@
+(() => {
+  const effects = [
+    ['━━','防衛線','縦または横に自分の土地を5マス以上まっすぐつなげる','直線上の土地すべてに自動防御 +1'],
+    ['▣','完全包囲','敵の1マスを周囲8マスの自領地で「口」の字に囲む','その敵地の占領時間を45%短縮'],
+    ['田','砦形成','自分の土地で2×2の四角を作る','4マスすべてに自動防御 +1。防衛線とも重複'],
+    ['⚔','橋頭堡','狙うマスの上下左右3方向以上を自領地にする','そのマスへの占領時間を20%短縮'],
+    ['🌿','大領地ネットワーク','上下左右につながった自領地を増やす','5マスで収入+6%／8マスで+10%／12マスで+15%']
+  ];
+  function current(){const b=window.__komorebiTerritoryShapeBonuses||{},active=[];if(b.lineDefense?.length)active.push(`防衛線 ${b.lineDefense.length}マス`);if(b.encircledEnemies?.length)active.push(`完全包囲 ${b.encircledEnemies.length}か所`);if(b.blocks?.length)active.push(`砦形成 ${b.blocks.length}マス`);if(b.frontier?.length)active.push(`橋頭堡候補 ${b.frontier.length}か所`);const n=Number(b.largestConnected)||0;if(n>=5)active.push(`大領地ネットワーク ${n}マス・収入+${n>=12?15:n>=8?10:6}%`);return active}
+  function build(){
+    const row=document.querySelector('.world-title-row');if(!row||document.getElementById('territoryEffectsBtn'))return;
+    const btn=document.createElement('button');btn.id='territoryEffectsBtn';btn.className='small-button event-list-button';btn.type='button';btn.textContent='🧩 領地効果';row.appendChild(btn);
+    const d=document.createElement('dialog');d.id='territoryEffectsDialog';d.className='event-list-dialog';d.innerHTML=`<div class="dialog-inner"><button class="dialog-close" type="button" aria-label="閉じる">×</button><p class="eyebrow">TERRITORY FORMATION</p><h2>土地の取り方で発動する5つの効果</h2><p class="tile-description">土地は数だけでなく、形やつなげ方でも強くなります。条件を崩すと形ボーナスも解除されます。</p><div id="territoryEffectsActive" class="territory-effects-active"></div><div class="territory-effects-list">${effects.map(([icon,name,condition,reward])=>`<article><b>${icon}</b><div><strong>${name}</strong><small>${condition}</small><p>${reward}</p></div></article>`).join('')}</div><p class="event-list-note">※ 自動防御は購入した防御装置とは別枠。完全包囲と橋頭堡は敵地への侵攻時に自動判定されます。</p></div>`;document.body.appendChild(d);
+    const style=document.createElement('style');style.textContent=`#territoryEffectsDialog .dialog-inner{width:min(92vw,590px);max-height:min(84vh,740px);overflow:auto}#territoryEffectsDialog .dialog-close{appearance:none;width:28px;height:28px;padding:0;display:grid;place-items:center;background:linear-gradient(#3b5649,#2a4037);border:1px solid #71815c;border-radius:4px;color:#f1d783;font:700 17px/1 'DotGothic16',sans-serif;cursor:pointer}.territory-effects-active{margin:10px 0;padding:8px;background:#20382f;border:1px solid #58735d;font-size:9px;line-height:1.7;color:#dce8c4}.territory-effects-active strong{color:#f0d77c}.territory-effects-list{display:grid;gap:7px;margin-top:10px}.territory-effects-list article{display:grid;grid-template-columns:38px 1fr;gap:8px;padding:9px;background:#1b302b;border:1px solid #536e56}.territory-effects-list article>b{font-size:19px;text-align:center;color:#f0d77c}.territory-effects-list strong{display:block;color:#eee1aa;font-size:10px}.territory-effects-list small{display:block;margin-top:3px;color:#b9c3aa;font-size:8px;line-height:1.45}.territory-effects-list p{margin:4px 0 0;color:#d9e2c6;font-size:9px;line-height:1.45}@media(max-width:600px){#territoryEffectsDialog .dialog-inner{width:94vw;padding:16px}.territory-effects-list article{grid-template-columns:31px 1fr;padding:7px}.territory-effects-list article>b{font-size:16px}}`;document.head.appendChild(style);
+    const refresh=()=>{const a=current(),box=document.getElementById('territoryEffectsActive');box.innerHTML=a.length?`<strong>いま発動中</strong><br>${a.join(' ／ ')}`:'<strong>いま発動中</strong><br>まだ形ボーナスは発動していません。土地をつなげて狙ってみよう。'};
+    btn.addEventListener('click',()=>{refresh();d.showModal()});d.querySelector('.dialog-close').addEventListener('click',()=>d.close());d.addEventListener('click',e=>{if(e.target===d)d.close()});
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',build);else build();
+})();
