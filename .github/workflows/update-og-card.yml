@@ -19,105 +19,27 @@ jobs:
         with:
           ref: main
 
-      - name: Install image tools and Japanese font
+      - name: Fix zero-morale occupation
         run: |
-          python -m pip install --quiet pillow
-          sudo apt-get update -qq
-          sudo apt-get install -y -qq fonts-noto-cjk
-
-      - name: Generate Japanese Open Graph card
-        run: |
-          cat > /tmp/make_og.py <<'PY'
-          from PIL import Image, ImageDraw, ImageFont
-          import glob, math
-
-          W,H=1200,630
-          img=Image.new('RGB',(W,H),'#082f2a')
-          d=ImageDraw.Draw(img)
-          gold='#d9bf72'; cream='#fff2d1'; muted='#b9c8b6'
-
-          for y in range(22,H,24):
-              for x in range(22,W,24):
-                  d.ellipse((x,y,x+2,y+2), fill='#164a42')
-
-          d.rounded_rectangle((34,34,W-34,H-34), radius=26, outline=gold, width=4, fill='#0b3630')
-
-          fonts=glob.glob('/usr/share/fonts/opentype/noto/*CJK*Bold*.ttc') or glob.glob('/usr/share/fonts/opentype/noto/*CJK*.ttc')
-          regs=glob.glob('/usr/share/fonts/opentype/noto/*CJK*Regular*.ttc') or fonts
-          bold=fonts[0]; reg=regs[0]
-          def F(path,size): return ImageFont.truetype(path,size)
-
-          d.rectangle((72,72,140,140), outline=gold, width=4)
-          cx,cy=106,106
-          star=[(cx,cy-23),(cx+7,cy-7),(cx+23,cy),(cx+7,cy+7),(cx,cy+23),(cx-7,cy+7),(cx-23,cy),(cx-7,cy-7)]
-          d.polygon(star, fill='#c8da7c')
-          d.text((165,79),'ピクセルアドベンチャー・領地RPG',font=F(reg,24),fill=gold)
-
-          title='こもれび開拓団'
-          fs=70
-          while True:
-              font=F(bold,fs)
-              box=d.textbbox((0,0),title,font=font)
-              if box[2]-box[0] <= 650 or fs<=50: break
-              fs-=2
-          d.text((70,185),title,font=font,fill=cream)
-          d.text((72,278),'森を歩いて、土地を広げよう。',font=F(reg,34),fill=muted)
-          d.text((72,332),'ピクセル領地RPG',font=F(reg,25),fill=gold)
-
-          d.rounded_rectangle((72,392,590,462),radius=14,outline=gold,width=3,fill='#0a322d')
-          d.text((107,411),'探検  ◆  開拓  ◆  わが家づくり',font=F(reg,25),fill=gold)
-          d.text((72,520),'toro0328.github.io/dot-territory',font=F(reg,18),fill=muted)
-
-          mx,my=760,150; cell=83; gap=6
-          d.rectangle((mx-14,my-14,mx+4*cell+3*gap+14,my+3*cell+2*gap+14),outline=gold,width=4,fill='#173f36')
-          tiles=[
-              ['#759b59','#7aa05d','#4e8791','#315f47'],
-              ['#759b59','#c69d61','#759b59','#b86956'],
-              ['#4e8791','#759b59','#315f47','#e0bd67']]
-          for r in range(3):
-              for c in range(4):
-                  x=mx+c*(cell+gap); y=my+r*(cell+gap)
-                  d.rectangle((x,y,x+cell,y+cell),fill=tiles[r][c],outline='#173229',width=5)
-                  if (r,c) in [(0,0),(0,1),(1,0),(1,2),(2,1)]:
-                      for k in range(3):
-                          px=x+18+((k*23+c*11)%48); py=y+18+((k*19+r*9)%48)
-                          d.rectangle((px,py,px+7,py+7),fill='#e8cf77')
-                  if (r,c) in [(0,3),(2,2)]:
-                      for tx,ty in [(22,45),(46,48),(35,23)]:
-                          d.polygon([(x+tx,y+ty-15),(x+tx-12,y+ty+8),(x+tx+12,y+ty+8)],fill='#214f39')
-                  if (r,c) in [(0,2),(2,0)]:
-                      for off in [24,48]:
-                          d.arc((x+18,y+off-8,x+65,y+off+8),0,180,fill='#8cc3c9',width=3)
-
-          x=mx+1*(cell+gap); y=my+1*(cell+gap)
-          d.rectangle((x+25,y+39,x+60,y+70),fill='#e6c58a')
-          d.polygon([(x+14,y+42),(x+42,y+16),(x+70,y+42)],fill='#a75b39')
-          d.rectangle((x+32,y+48,x+44,y+61),fill='#6da5ae')
-          d.rectangle((x+48,y+50,x+58,y+70),fill='#8a5a39')
-
-          x=mx+3*(cell+gap); y=my+2*(cell+gap); cx=x+cell//2; cy=y+cell//2
-          pts=[]
-          for i in range(10):
-              a=-math.pi/2+i*math.pi/5
-              rr=25 if i%2==0 else 11
-              pts.append((cx+math.cos(a)*rr,cy+math.sin(a)*rr))
-          d.polygon(pts,fill='#734127')
-
-          img.save('share-card-ja-v5.png',optimize=True)
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('game.js')
+          s=p.read_text()
+          old="if(state.occupy){drainOccupationMorale(now);if(state.occupy.progress>=state.occupy.required)finishOccupation()}tickComputers(now);save();render()"
+          new="if(state.occupy){drainOccupationMorale(now);if(state.morale<=0&&(state.occupy.type==='raid'||state.occupy.type==='reclaim')){cancelOccupation('気力が0になったため占領を中断した。家や休憩所で回復しよう。')}else if(state.occupy&&state.occupy.progress>=state.occupy.required)finishOccupation()}tickComputers(now);save();render()"
+          if old not in s:
+              raise SystemExit('target occupation tick not found')
+          s=s.replace(old,new)
+          # resumeOffline has the same sequence; replace any remaining occurrence too.
+          s=s.replace(old,new)
+          p.write_text(s)
           PY
-          python /tmp/make_og.py
-          file share-card-ja-v5.png
-
-      - name: Update Open Graph tags
-        run: |
-          sed -i -E 's#share-card-ja(-v[0-9]+)?\.(jpg|png)(\?v=[0-9]+)?#share-card-ja-v5.png#g' index.html
-          sed -i 's#<meta property="og:image:width" content="[^"]*">#<meta property="og:image:width" content="1200">#' index.html
-          sed -i 's#<meta property="og:image:height" content="[^"]*">#<meta property="og:image:height" content="630">#' index.html
+          sed -i -E 's#game\.js\?v=[0-9]+#game.js?v=69#g' index.html
 
       - name: Commit changes
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add index.html share-card-ja-v5.png
-          git commit -m "Force fresh social preview image URL" || exit 0
+          git add game.js index.html
+          git commit -m "Stop territory capture when morale reaches zero" || exit 0
           git push origin main
