@@ -11,10 +11,14 @@
     for (const bot of state.computers || []) {
       const trip = bot.raidTrip;
       if (!trip || trip.returning) continue;
+      const forwardPath = Array.isArray(trip.path) ? [...trip.path] : [];
+      const cursor = Math.max(0, Math.min(forwardPath.length, Number(trip.cursor) || 0));
       bot.__raidReturnSeed = {
         origin: trip.origin || bot.lands?.[0] || bot.position,
         raidKey: trip.key || state.raid.key || bot.position,
-        forwardPath: Array.isArray(trip.path) ? [...trip.path] : [],
+        currentPosition: bot.position || trip.origin || bot.lands?.[0],
+        forwardPath,
+        cursor,
         stepMs: Math.max(900, Number(trip.stepMs) || 2500)
       };
       delete bot.__raidReturnTrip;
@@ -24,14 +28,26 @@
   function startReturnTrip(bot, now) {
     const seed = bot.__raidReturnSeed;
     if (!seed || bot.raidTrip || bot.__raidReturnTrip) return;
+
     const forward = Array.isArray(seed.forwardPath) ? seed.forwardPath : [];
-    const returnPath = [...forward.slice(0, -1).reverse()];
-    if (seed.origin) returnPath.push(seed.origin);
+    const cursor = Math.max(0, Math.min(forward.length, Number(seed.cursor) || 0));
+    const current = seed.currentPosition || (cursor > 0 ? forward[cursor - 1] : seed.origin) || bot.position;
+    const walked = forward.slice(0, cursor);
+    const returnPath = walked.slice(0, -1).reverse();
+    if (seed.origin && current !== seed.origin && returnPath[returnPath.length - 1] !== seed.origin) returnPath.push(seed.origin);
+
     bot.action = null;
-    bot.position = seed.raidKey || bot.position || seed.origin;
+    bot.position = current || seed.origin;
+
+    if (!returnPath.length || bot.position === seed.origin) {
+      bot.position = seed.origin || bot.position;
+      delete bot.__raidReturnSeed;
+      bot.nextActionAt = Math.max(Number(bot.nextActionAt) || 0, now + 4000 + Math.random() * 4000);
+      return;
+    }
+
     bot.__raidReturnTrip = {
       origin: seed.origin,
-      raidKey: seed.raidKey,
       path: returnPath,
       startedAt: now,
       stepMs: seed.stepMs || 2500
@@ -46,14 +62,16 @@
     const path = Array.isArray(trip.path) ? trip.path : [];
     const stepMs = Math.max(900, Number(trip.stepMs) || 2500);
     const due = Math.max(0, Math.floor((now - Number(trip.startedAt || now)) / stepMs));
+
     if (!path.length || due >= path.length) {
-      bot.position = trip.origin || bot.position;
+      bot.position = trip.origin || path[path.length - 1] || bot.position;
       delete bot.__raidReturnTrip;
       delete bot.__raidReturnSeed;
       bot.nextActionAt = Math.max(Number(bot.nextActionAt) || 0, now + 4000 + Math.random() * 4000);
       return;
     }
-    bot.position = due > 0 ? path[due - 1] : (trip.raidKey || bot.position);
+
+    if (due > 0) bot.position = path[due - 1];
     bot.nextActionAt = Math.max(Number(bot.nextActionAt) || 0, now + stepMs + 3500);
   }
 
@@ -96,10 +114,6 @@
   window.KomorebiRuntimePatch = {
     rewardFeedback(id, amount = 1000) {
       window.__komorebiFeedbackReward = { id, amount };
-      try {
-        const raw = localStorage.getItem(GAME_KEY);
-        if (raw) localStorage.setItem(GAME_KEY, raw);
-      } catch {}
     }
   };
 })();
