@@ -34,14 +34,12 @@ jobs:
           W,H=1200,630
           img=Image.new('RGB',(W,H),'#082f2a')
           d=ImageDraw.Draw(img)
-          gold='#d9bf72'; cream='#fff2d1'; muted='#b9c8b6'; green='#7fa56f'; dark='#102f2b'
+          gold='#d9bf72'; cream='#fff2d1'; muted='#b9c8b6'
 
-          # subtle dot pattern
           for y in range(22,H,24):
               for x in range(22,W,24):
                   d.ellipse((x,y,x+2,y+2), fill='#164a42')
 
-          # frame
           d.rounded_rectangle((34,34,W-34,H-34), radius=26, outline=gold, width=4, fill='#0b3630')
 
           fonts=glob.glob('/usr/share/fonts/opentype/noto/*CJK*Bold*.ttc') or glob.glob('/usr/share/fonts/opentype/noto/*CJK*.ttc')
@@ -49,15 +47,12 @@ jobs:
           bold=fonts[0]; reg=regs[0]
           def F(path,size): return ImageFont.truetype(path,size)
 
-          # emblem
           d.rectangle((72,72,140,140), outline=gold, width=4)
           cx,cy=106,106
           star=[(cx,cy-23),(cx+7,cy-7),(cx+23,cy),(cx+7,cy+7),(cx,cy+23),(cx-7,cy+7),(cx-23,cy),(cx-7,cy-7)]
           d.polygon(star, fill='#c8da7c')
-
           d.text((165,79),'ピクセルアドベンチャー・領地RPG',font=F(reg,24),fill=gold)
 
-          # title, shrink if needed
           title='こもれび開拓団'
           fs=70
           while True:
@@ -69,12 +64,10 @@ jobs:
           d.text((72,278),'森を歩いて、土地を広げよう。',font=F(reg,34),fill=muted)
           d.text((72,332),'ピクセル領地RPG',font=F(reg,25),fill=gold)
 
-          # button
           d.rounded_rectangle((72,392,590,462),radius=14,outline=gold,width=3,fill='#0a322d')
           d.text((107,411),'探検  ◆  開拓  ◆  わが家づくり',font=F(reg,25),fill=gold)
           d.text((72,520),'toro0328.github.io/dot-territory',font=F(reg,18),fill=muted)
 
-          # pixel territory map
           mx,my=760,150; cell=83; gap=6
           d.rectangle((mx-14,my-14,mx+4*cell+3*gap+14,my+3*cell+2*gap+14),outline=gold,width=4,fill='#173f36')
           tiles=[
@@ -96,14 +89,12 @@ jobs:
                       for off in [24,48]:
                           d.arc((x+18,y+off-8,x+65,y+off+8),0,180,fill='#8cc3c9',width=3)
 
-          # house
           x=mx+1*(cell+gap); y=my+1*(cell+gap)
           d.rectangle((x+25,y+39,x+60,y+70),fill='#e6c58a')
           d.polygon([(x+14,y+42),(x+42,y+16),(x+70,y+42)],fill='#a75b39')
           d.rectangle((x+32,y+48,x+44,y+61),fill='#6da5ae')
           d.rectangle((x+48,y+50,x+58,y+70),fill='#8a5a39')
 
-          # star tile
           x=mx+3*(cell+gap); y=my+2*(cell+gap); cx=x+cell//2; cy=y+cell//2
           pts=[]
           for i in range(10):
@@ -112,14 +103,14 @@ jobs:
               pts.append((cx+math.cos(a)*rr,cy+math.sin(a)*rr))
           d.polygon(pts,fill='#734127')
 
-          img.save('share-card-ja.png',optimize=True)
+          img.save('share-card-ja-v5.png',optimize=True)
           PY
           python /tmp/make_og.py
-          file share-card-ja.png
+          file share-card-ja-v5.png
 
       - name: Update Open Graph tags
         run: |
-          sed -i -E 's#share-card-ja\.(jpg|png)\?v=[0-9]+#share-card-ja.png?v=4#g' index.html
+          sed -i -E 's#share-card-ja(-v[0-9]+)?\.(jpg|png)(\?v=[0-9]+)?#share-card-ja-v5.png#g' index.html
           sed -i 's#<meta property="og:image:width" content="[^"]*">#<meta property="og:image:width" content="1200">#' index.html
           sed -i 's#<meta property="og:image:height" content="[^"]*">#<meta property="og:image:height" content="630">#' index.html
 
@@ -127,6 +118,6 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add index.html share-card-ja.png
-          git commit -m "Fix Japanese social preview image" || exit 0
+          git add index.html share-card-ja-v5.png
+          git commit -m "Force fresh social preview image URL" || exit 0
           git push origin main
