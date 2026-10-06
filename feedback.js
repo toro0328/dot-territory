@@ -50,7 +50,7 @@
           <label>内容
             <textarea id="feedbackMessage" maxlength="1200" required placeholder="ここに入力してください"></textarea>
           </label>
-          <small>※ 公開ページからは読み返せない、投稿専用の保存先へ送る設計です。</small>
+          <small>※ 公開ページからは読み返せない、投稿専用の保存先へ送ります。</small>
           <p id="feedbackStatus" class="feedback-status" role="status" aria-live="polite"></p>
           <button id="feedbackSubmit" class="primary-button" type="submit">送信する</button>
         </form>
@@ -101,19 +101,26 @@
     try {
       const base = String(cfg.supabaseUrl).replace(/\/$/, '');
       const table = encodeURIComponent(cfg.table || 'feedback_reports');
+      const headers = {
+        apikey: cfg.anonKey,
+        'Content-Type': 'application/json',
+        Prefer: 'return=minimal'
+      };
+      // 旧anon JWTを使う場合だけAuthorizationを付ける。新publishable keyでは不要。
+      if (String(cfg.anonKey).startsWith('eyJ')) headers.Authorization = `Bearer ${cfg.anonKey}`;
+
       const response = await fetch(`${base}/rest/v1/${table}`, {
         method: 'POST',
-        headers: {
-          apikey: cfg.anonKey,
-          Authorization: `Bearer ${cfg.anonKey}`,
-          'Content-Type': 'application/json',
-          Prefer: 'return=minimal'
-        },
+        headers,
         body: JSON.stringify(payload)
       });
       if (!response.ok) throw new Error(`HTTP ${response.status}`);
 
-      window.__komorebiFeedbackReward = { id: `feedback:${id}`, amount: 1000 };
+      if (window.KomorebiRuntimePatch?.rewardFeedback) {
+        window.KomorebiRuntimePatch.rewardFeedback(id, 1000);
+      } else {
+        window.__komorebiFeedbackReward = { id: `feedback:${id}`, amount: 1000 };
+      }
       document.dispatchEvent(new Event('pointerdown'));
       document.getElementById('feedbackMessage').value = '';
       status.textContent = '送ってくれてありがとう！ +1,000ptをプレゼントしました。';
