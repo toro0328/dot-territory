@@ -83,8 +83,6 @@
         <summary class="profile-summary"><div class="profile-head"><div class="avatar">🧙</div><div><p class="eyebrow">冒険者ギルド</p><h2 id="playerName">開拓者</h2></div></div><span class="fold-hint">詳細を開く ＋</span></summary>
         <div class="profile-more"><button id="renameBtn" class="text-button">名前変更</button><div class="income-row"><span>領地の収入</span><b id="income">0 pt / 分</b></div><div class="income-row"><span>家の装飾ボーナス</span><b id="bonus">+0%</b></div><p class="profile-note">気力は最大100。占領中に減り、土地を取ると5回復します。</p></div>
       </details>
-
-      
     </aside>
   </main>
   <footer>イベント時刻は日本時間に同期します。現在の試作データとイベント進行はこのブラウザー内に保存され、プレイヤー同士で同じ世界を共有する機能はオンライン保存先の追加後に利用できます。</footer>
@@ -113,7 +111,10 @@
       };
     })();
   </script>
+  <script src="runtime-patches.js?v=1"></script>
   <script src="game.js?v=68"></script>
+  <script src="feedback-config.js?v=1"></script>
+  <script src="feedback.js?v=1"></script>
   <script>
     (()=>{
       const panel=document.getElementById('bonusEventsPanel');
